@@ -13,13 +13,19 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://greensage.pages.dev/blog/ev-tax-credit-2026.html</loc>
+    <loc>https://greensage.pages.dev/privacy.html</loc>
+    <lastmod>2026-02-09</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://greensage.pages.dev/blog/solar-worth-it-2026.html</loc>
     <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://greensage.pages.dev/blog/solar-worth-it-2026.html</loc>
+    <loc>https://greensage.pages.dev/blog/ev-tax-credit-2026.html</loc>
     <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
