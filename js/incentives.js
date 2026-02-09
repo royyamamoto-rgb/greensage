@@ -7,15 +7,36 @@
 
 class IncentivesFinder {
   constructor() {
-    // Federal incentives — updated for OBBBA (One Big Beautiful Bill Act, July 2025)
+    // Federal incentives — updated Feb 2026, reflects OBBBA (One Big Beautiful Bill Act, signed July 4, 2025)
+    // Sources: IRS.gov, DOE AFDC, Electrification Coalition, H&R Block, TurboTax, Grant Thornton
     this.federal = [
+      {
+        id: 'fed-auto-loan',
+        name: 'Auto Loan Interest Deduction (NEW)',
+        amount: 'Up to $10,000/yr deduction',
+        category: 'ev',
+        status: 'active',
+        desc: 'NEW under OBBBA: Above-the-line tax deduction for auto loan interest on NEW vehicles assembled in the US. Up to $10,000/yr. Applies to ALL vehicle types (gas, hybrid, EV). Income phase-out: $100K single / $200K joint. Active 2025-2028.',
+        url: 'https://www.irs.gov/newsroom/treasury-irs-provide-guidance-on-the-new-deduction-for-car-loan-interest-under-the-one-big-beautiful-bill',
+        icon: '💰'
+      },
+      {
+        id: 'fed-ev-new',
+        name: 'Clean Vehicle Credit (30D) — Small Mfrs Only',
+        amount: 'Up to $7,500',
+        category: 'ev',
+        status: 'limited',
+        desc: 'Expired Sep 30, 2025 for major manufacturers (Tesla, GM, Ford, Toyota, Hyundai/Kia, BMW, Nissan, VW, Stellantis — all exceeded 200K sales cap). Through Dec 31, 2026 ONLY for: Honda, Rivian, Lucid, Mercedes, Subaru, Volvo, Mazda. Vehicles must still meet assembly, MSRP ($55K sedan/$80K SUV), and income requirements. ALL credits end Jan 1, 2027.',
+        url: 'https://fueleconomy.gov/feg/tax2023.shtml',
+        icon: '🚗'
+      },
       {
         id: 'fed-ev-charger',
         name: 'EV Charger Tax Credit (30C)',
         amount: '30% up to $1,000',
         category: 'ev',
         status: 'active',
-        desc: 'Tax credit for home EV charging equipment. Covers 30% of cost and installation, up to $1,000 residential. Must be in eligible census tract. Active through June 30, 2026.',
+        desc: 'Tax credit for home EV charging equipment. 30% of hardware + installation, up to $1,000 residential / $100,000 commercial per port. RESTRICTION: Must be in eligible census tract (rural or low-income area). Active through June 30, 2026.',
         url: 'https://www.irs.gov/credits-deductions/alternative-fuel-vehicle-refueling-property-credit-for-individuals',
         icon: '🔌'
       },
@@ -25,7 +46,7 @@ class IncentivesFinder {
         amount: 'Up to $14,000',
         category: 'appliance',
         status: 'active',
-        desc: 'Point-of-sale rebates: heat pumps ($8,000), electrical panels ($4,000), insulation ($1,600), electric stoves ($840), dryers ($840). Income-qualified (under 150% AMI). Varies by state.',
+        desc: 'IRA-funded point-of-sale rebates: heat pumps ($8,000), electrical panels ($4,000), insulation ($1,600), electric stoves ($840), dryers ($840). Income-qualified (under 150% AMI). Panel upgrades can enable L2 EV charger installation. Varies by state — some states fully launched, others pending.',
         url: 'https://www.energystar.gov/partner-resources/state-and-tribal-rebate-programs/hear-program',
         icon: '⚡'
       },
@@ -35,37 +56,37 @@ class IncentivesFinder {
         amount: 'Up to $8,000',
         category: 'home',
         status: 'active',
-        desc: 'Performance-based whole-house rebates for 20-35%+ energy savings. Up to $4,000 moderate-income, $8,000 low-income. Administered by states.',
+        desc: 'IRA-funded performance-based whole-house rebates for 20-35%+ energy savings. Up to $4,000 moderate-income, $8,000 low-income. Administered by states. These are spending-side appropriations (not tax credits) so OBBBA did not terminate them.',
         url: 'https://www.energy.gov/scep/home-efficiency-rebates',
         icon: '🏡'
       },
       {
-        id: 'fed-ev-new',
-        name: 'Clean Vehicle Tax Credit (New EV)',
-        amount: 'Up to $7,500',
-        category: 'ev',
-        status: 'limited',
-        desc: 'Expired Sept 30, 2025 for most manufacturers. Limited 2026 extension ONLY for manufacturers with <200,000 US EV sales (Rivian, Lucid, Honda). Check eligibility carefully.',
-        url: 'https://fueleconomy.gov/feg/tax2023.shtml',
-        icon: '🚗'
-      },
-      {
         id: 'fed-ev-used',
-        name: 'Used Clean Vehicle Credit',
+        name: 'Used Clean Vehicle Credit (25E)',
         amount: 'Up to $4,000',
         category: 'ev',
         status: 'expired',
-        desc: 'Was 30% of sale price up to $4,000 for used EVs under $25,000 from dealers. Expired Sept 30, 2025 under OBBBA.',
+        desc: 'Was 30% of sale price up to $4,000 for used EVs under $25,000 from dealers. Expired Sep 30, 2025 under OBBBA. No small-manufacturer exception — fully terminated. No replacement program.',
         url: 'https://www.irs.gov/credits-deductions/used-clean-vehicle-credit',
         icon: '🚙'
       },
       {
+        id: 'fed-ev-commercial',
+        name: 'Commercial Clean Vehicle Credit (45W)',
+        amount: 'Up to $7,500-$40,000',
+        category: 'ev',
+        status: 'expired',
+        desc: 'Was up to $7,500 for light-duty / $40,000 for heavy-duty commercial EVs. Expired Sep 30, 2025 under OBBBA. Binding contract rule applies for contracts signed before cutoff.',
+        url: 'https://afdc.energy.gov/laws/ev-tax-credits',
+        icon: '🚛'
+      },
+      {
         id: 'fed-solar-itc',
-        name: 'Residential Solar Tax Credit (ITC)',
+        name: 'Residential Solar Tax Credit (25D)',
         amount: '30% of cost',
         category: 'solar',
         status: 'expired',
-        desc: 'Was 30% of solar system cost with no cap. Expired Dec 31, 2025 for customer-owned systems under OBBBA. Third-party owned (leases/PPAs) may still qualify through 2027.',
+        desc: 'Was 30% of solar system cost with no cap. Expired Dec 31, 2025 for customer-owned systems under OBBBA. Third-party owned (leases/PPAs) may still qualify through 2027 under separate provisions.',
         url: 'https://www.irs.gov/credits-deductions/residential-clean-energy-credit',
         icon: '☀️'
       },
@@ -75,7 +96,7 @@ class IncentivesFinder {
         amount: '30% of cost',
         category: 'solar',
         status: 'expired',
-        desc: 'Was 30% for battery storage systems (3+ kWh). Expired Dec 31, 2025 under OBBBA.',
+        desc: 'Was 30% for battery storage systems (3+ kWh capacity). Expired Dec 31, 2025 under OBBBA.',
         url: 'https://www.energy.gov/eere/solar/homeowners-guide-federal-tax-credit-solar-photovoltaics',
         icon: '🔋'
       },
@@ -85,7 +106,7 @@ class IncentivesFinder {
         amount: 'Up to $2,000/year',
         category: 'home',
         status: 'expired',
-        desc: 'Was 30% up to $2,000/year for qualifying heat pumps. Part of Energy Efficient Home Improvement Credit. Expired Dec 31, 2025 under OBBBA.',
+        desc: 'Was 30% up to $2,000/year for qualifying heat pumps. Part of Energy Efficient Home Improvement Credit. Expired Dec 31, 2025 under OBBBA. HEAR rebates ($8,000 for heat pumps) may still be available as alternative.',
         url: 'https://www.energystar.gov/about/federal-tax-credits/air-source-heat-pumps',
         icon: '🌡️'
       },
@@ -95,14 +116,40 @@ class IncentivesFinder {
         amount: 'Up to $1,200/year',
         category: 'home',
         status: 'expired',
-        desc: 'Was 30% for insulation, doors ($250/door), windows ($600 max). Expired Dec 31, 2025 under OBBBA.',
+        desc: 'Was 30% for insulation, doors ($250/door), windows ($600 max). Expired Dec 31, 2025 under OBBBA. HOMES rebates may still cover insulation improvements.',
         url: 'https://www.energystar.gov/about/federal-tax-credits/insulation',
         icon: '🏠'
       }
     ];
 
-    // State incentives — these are UNAFFECTED by OBBBA
+    // State incentives — these are UNAFFECTED by OBBBA (state programs independent of federal)
     this.states = {
+      'CO': {
+        name: 'Colorado',
+        incentives: [
+          { name: 'Colorado EV Tax Credit', amount: '$750-$3,250', category: 'ev', desc: '$750 base credit + $2,500 additional for EVs with MSRP under $35,000. Stacks with other incentives.', url: 'https://energyoffice.colorado.gov/transportation/grants-incentives/ev-tax-credits' },
+          { name: 'Vehicle Exchange Colorado (VXC)', amount: 'Up to $9,000 new / $6,000 used', category: 'ev', desc: 'Income-qualified program: up to $9,000 for new EV, $6,000 for used EV. One of the best state EV programs in the US.', url: 'https://energyoffice.colorado.gov/transportation/grants-incentives/vehicle-exchange-colorado' },
+          { name: 'Xcel Energy EV Rebate', amount: 'Up to $5,500 new / $3,000 used', category: 'ev', desc: 'Xcel Energy utility rebate stackable with state credit. Up to $5,500 new / $3,000 used EV.', url: 'https://ev.xcelenergy.com/ev-rebate' },
+          { name: 'Solar Property Tax Exemption', amount: '100% exempt', category: 'solar', desc: 'Solar systems exempt from property tax assessment for 20 years.', url: 'https://energyoffice.colorado.gov/renewable-energy/solar' }
+        ]
+      },
+      'CT': {
+        name: 'Connecticut',
+        incentives: [
+          { name: 'CHEAPR EV Rebate', amount: 'Up to $9,500', category: 'ev', desc: 'Up to $9,500 for purchase/lease of eligible BEV, PHEV, or FCEV. One of the highest state EV incentives.', url: 'https://portal.ct.gov/deep/air/mobile-sources/cheapr/cheapr---connecticut-hydrogen-and-electric-automobile-purchase-rebate' },
+          { name: 'Home EV Charger Rebate', amount: 'Up to $1,500', category: 'ev', desc: '$1,500 rebate for home Level 2 EV charger purchase and installation.', url: 'https://portal.ct.gov/deep/air/mobile-sources/cheapr/cheapr---connecticut-hydrogen-and-electric-automobile-purchase-rebate' },
+          { name: 'Net Metering (Full Retail)', amount: '1:1 retail credits', category: 'solar', desc: 'Full retail rate net metering for residential solar systems.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/ct/' },
+          { name: 'Solar Sales Tax Exemption', amount: '6.35% exempt', category: 'solar', desc: 'Solar equipment exempt from 6.35% CT sales tax.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/ct/' }
+        ]
+      },
+      'OR': {
+        name: 'Oregon',
+        incentives: [
+          { name: 'Charge Ahead Rebate', amount: 'Up to $7,500 new / $5,000 used', category: 'ev', desc: 'Up to $7,500 for new EV, $5,000 for used. SUSPENDED Sep 2025 (funding exhausted) — watch for 2026 refunding.', url: 'https://goelectric.oregon.gov/incentives' },
+          { name: 'Solar + Storage Rebate', amount: 'Up to $5,000', category: 'solar', desc: 'Oregon Solar + Storage Rebate Program for residential systems. Income-qualified.', url: 'https://www.oregon.gov/energy/incentives/pages/solar-storage-rebate-program.aspx' },
+          { name: 'Net Metering (Full Retail)', amount: '1:1 retail credits', category: 'solar', desc: 'Full retail rate net metering for all major OR utilities.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/or/' }
+        ]
+      },
       'CA': {
         name: 'California',
         incentives: [
@@ -289,8 +336,8 @@ class IncentivesFinder {
 
   getTotalPotentialSavings(stateCode) {
     let total = 0;
-    // Active federal: HEAR ($14,000) + HOMES ($8,000) + EV charger ($1,000)
-    total += 14000 + 8000 + 1000;
+    // Active federal: HEAR ($14,000) + HOMES ($8,000) + EV charger ($1,000) + Auto loan deduction (~$2,500 tax value)
+    total += 14000 + 8000 + 1000 + 2500;
 
     const state = this.states[stateCode];
     if (state) {
