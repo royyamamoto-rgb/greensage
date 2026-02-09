@@ -8,9 +8,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="description" content="AI-powered sustainable living coach. Calculate your carbon footprint, track green challenges, discover solar savings, and shop eco-friendly products.">
   <title>GreenSage — Sustainable Living Coach</title>
-  <link rel="manifest" href="manifest.json?v=1">
+  <link rel="manifest" href="manifest.json?v=2">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
-  <link rel="stylesheet" href="css/styles.css?v=1">
+  <link rel="stylesheet" href="css/styles.css?v=2">
 </head>
 <body>
 
@@ -30,6 +30,11 @@
       <div class="landing-feature-icon">☀️</div>
       <div class="landing-feature-title">Solar Savings</div>
       <div class="landing-feature-desc">Estimate your solar panel savings based on your location</div>
+    </div>
+    <div class="landing-feature">
+      <div class="landing-feature-icon">🚗</div>
+      <div class="landing-feature-title">EV Switch Calc</div>
+      <div class="landing-feature-desc">Compare gas vs electric: savings, emissions & payback</div>
     </div>
     <div class="landing-feature">
       <div class="landing-feature-icon">🏆</div>
@@ -301,6 +306,182 @@
     </div>
   </div>
 
+  <!-- ====== TAB: EV Switching Calculator ====== -->
+  <div class="tab-content" id="tabEV">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🚗</span>
+        <div>
+          <div class="card-title">EV Switching Calculator</div>
+          <div class="card-subtitle">Compare your gas car vs going electric</div>
+        </div>
+      </div>
+
+      <div id="evForm">
+        <div class="form-group">
+          <label class="form-label">🚘 Your current gas vehicle</label>
+          <select class="form-select" id="evGasVehicle"></select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">⚡ EV you're considering</label>
+          <select class="form-select" id="evEVVehicle"></select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">📏 Annual miles driven</label>
+          <input type="range" class="form-range" id="evMiles" min="3000" max="40000" step="1000" value="12000">
+          <div class="range-labels">
+            <span>3k</span>
+            <span id="evMilesVal">12,000 mi</span>
+            <span>40k</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">⛽ Gas price ($/gallon)</label>
+          <input type="range" class="form-range" id="evGasPrice" min="2.50" max="6.00" step="0.10" value="3.50">
+          <div class="range-labels">
+            <span>$2.50</span>
+            <span id="evGasPriceVal">$3.50/gal</span>
+            <span>$6.00</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">🔌 Electricity rate ($/kWh)</label>
+          <input type="range" class="form-range" id="evElecRate" min="0.05" max="0.40" step="0.01" value="0.13">
+          <div class="range-labels">
+            <span>$0.05</span>
+            <span id="evElecRateVal">$0.13/kWh</span>
+            <span>$0.40</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">📅 Compare over how many years?</label>
+          <select class="form-select" id="evYears">
+            <option value="5">5 Years</option>
+            <option value="8">8 Years</option>
+            <option value="10" selected>10 Years</option>
+            <option value="15">15 Years</option>
+          </select>
+        </div>
+
+        <button class="btn btn-green" id="btnCalcEV">Compare Gas vs EV</button>
+      </div>
+
+      <!-- EV Results -->
+      <div class="ev-result" id="evResult">
+        <!-- Hero savings -->
+        <div class="ev-hero">
+          <div class="ev-hero-label">Total Savings Over <span id="evResYears">10</span> Years</div>
+          <div class="ev-hero-value" id="evResTotalSaving">--</div>
+          <div class="ev-hero-sub" id="evResPerYear">--</div>
+        </div>
+
+        <!-- EV Quick Stats -->
+        <div class="ev-matchup">
+          <div class="ev-matchup-car">
+            <div class="ev-matchup-icon">⛽</div>
+            <div class="ev-matchup-name" id="evResGasName">--</div>
+          </div>
+          <div class="ev-matchup-vs">VS</div>
+          <div class="ev-matchup-car">
+            <div class="ev-matchup-icon">⚡</div>
+            <div class="ev-matchup-name" id="evResEvName">--</div>
+          </div>
+        </div>
+
+        <!-- Cost comparison grid -->
+        <div class="ev-compare-title">Annual Cost Comparison</div>
+        <div class="ev-compare-grid">
+          <div class="ev-compare-header"></div>
+          <div class="ev-compare-header ev-gas-col">⛽ Gas</div>
+          <div class="ev-compare-header ev-ev-col">⚡ EV</div>
+
+          <div class="ev-compare-label">Fuel Cost</div>
+          <div class="ev-compare-val ev-gas-col" id="evResFuelGas">--</div>
+          <div class="ev-compare-val ev-ev-col" id="evResFuelEv">--</div>
+
+          <div class="ev-compare-label">Maintenance</div>
+          <div class="ev-compare-val ev-gas-col" id="evResMaintGas">--</div>
+          <div class="ev-compare-val ev-ev-col" id="evResMaintEv">--</div>
+
+          <div class="ev-compare-label">Cost per Mile</div>
+          <div class="ev-compare-val ev-gas-col" id="evResCpmGas">--</div>
+          <div class="ev-compare-val ev-ev-col" id="evResCpmEv">--</div>
+
+          <div class="ev-compare-label ev-compare-total">Annual Total</div>
+          <div class="ev-compare-val ev-gas-col ev-compare-total" id="evResTotalGas">--</div>
+          <div class="ev-compare-val ev-ev-col ev-compare-total" id="evResTotalEv">--</div>
+        </div>
+
+        <!-- EV Purchase info -->
+        <div class="ev-purchase-info">
+          <div class="ev-purchase-title">EV Purchase Details</div>
+          <div class="ev-purchase-row">
+            <span>MSRP</span>
+            <span id="evResMsrp">--</span>
+          </div>
+          <div class="ev-purchase-row">
+            <span>Federal Tax Credit</span>
+            <span class="ev-credit" id="evResCredit">--</span>
+          </div>
+          <div class="ev-purchase-row ev-purchase-total">
+            <span>Effective Price</span>
+            <span id="evResEffective">--</span>
+          </div>
+          <div class="ev-purchase-row">
+            <span>Range</span>
+            <span id="evResRange">--</span>
+          </div>
+        </div>
+
+        <!-- Environmental -->
+        <div class="ev-env-section">
+          <div class="ev-env-title">🌍 Environmental Impact</div>
+          <div class="solar-stats">
+            <div class="solar-stat">
+              <div class="solar-stat-value" id="evResCO2Gas">--</div>
+              <div class="solar-stat-label">Gas CO₂/yr</div>
+            </div>
+            <div class="solar-stat">
+              <div class="solar-stat-value" style="color:var(--primary);" id="evResCO2Ev">--</div>
+              <div class="solar-stat-label">EV CO₂/yr</div>
+            </div>
+            <div class="solar-stat">
+              <div class="solar-stat-value" style="color:var(--primary);" id="evResCO2Saved">--</div>
+              <div class="solar-stat-label">CO₂ Saved/yr</div>
+            </div>
+          </div>
+          <div class="solar-stats" style="margin-top:4px;">
+            <div class="solar-stat">
+              <div class="solar-stat-value" style="color:var(--accent);" id="evResTotalCO2">--</div>
+              <div class="solar-stat-label">Total CO₂ Saved</div>
+            </div>
+            <div class="solar-stat">
+              <div class="solar-stat-value" style="color:var(--primary);" id="evResTrees">--</div>
+              <div class="solar-stat-label">Trees Equivalent</div>
+            </div>
+            <div class="solar-stat">
+              <div class="solar-stat-value" style="color:var(--secondary);" id="evResEmReduce">--</div>
+              <div class="solar-stat-label">Emission Reduction</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cumulative savings chart -->
+        <div class="solar-chart">
+          <div class="solar-chart-title">Cumulative Running Cost Savings</div>
+          <div class="solar-chart-bars" id="evChartBars"></div>
+        </div>
+
+        <button class="btn btn-outline" id="btnRecalcEV" style="margin-top:16px;">Recalculate</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ====== TAB: Green Challenges ====== -->
   <div class="tab-content" id="tabChallenge">
     <div class="challenge-streak" id="streakBar">
@@ -374,6 +555,8 @@
         <div class="info-text">Answer questions about your transport, energy, diet, and shopping habits. Get a personalized carbon footprint score with actionable tips to reduce your emissions.</div>
         <div class="info-subtitle">☀️ Solar Calculator</div>
         <div class="info-text">Enter your electricity bill, roof size, and location to estimate solar panel savings over 25 years. Includes system size, cost, payback period, and CO₂ offset.</div>
+        <div class="info-subtitle">🚗 EV Switching Calculator</div>
+        <div class="info-text">Select your current gas car and an EV you're considering. Get a side-by-side comparison of fuel costs, maintenance, total cost of ownership, payback period, and CO₂ emissions over 5-15 years.</div>
         <div class="info-subtitle">🏆 Green Challenges</div>
         <div class="info-text">Complete 3 daily eco-challenges to build your streak. Earn points and track your cumulative environmental impact. New challenges every day.</div>
         <div class="info-subtitle">🛒 Eco Shop</div>
@@ -454,6 +637,10 @@
     <span>☀️</span>
     <span class="nav-btn-label">Solar</span>
   </button>
+  <button class="nav-btn" data-tab="tabEV">
+    <span>🚗</span>
+    <span class="nav-btn-label">EV</span>
+  </button>
   <button class="nav-btn" data-tab="tabChallenge">
     <span>🏆</span>
     <span class="nav-btn-label">Challenges</span>
@@ -492,11 +679,12 @@ if (sessionStorage.getItem('gs_entered')) {
   document.getElementById('appContainer').classList.add('active');
 }
 </script>
-<script src="js/carbon-calc.js?v=1"></script>
-<script src="js/solar-calc.js?v=1"></script>
-<script src="js/challenges.js?v=1"></script>
-<script src="js/green-shop.js?v=1"></script>
-<script src="js/learn.js?v=1"></script>
-<script src="js/app.js?v=1"></script>
+<script src="js/carbon-calc.js?v=2"></script>
+<script src="js/solar-calc.js?v=2"></script>
+<script src="js/ev-calc.js?v=2"></script>
+<script src="js/challenges.js?v=2"></script>
+<script src="js/green-shop.js?v=2"></script>
+<script src="js/learn.js?v=2"></script>
+<script src="js/app.js?v=2"></script>
 </body>
 </html>

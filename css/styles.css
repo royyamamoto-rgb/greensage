@@ -620,6 +620,166 @@ body {
   color: var(--text-muted);
 }
 
+/* ---- EV Calculator ---- */
+.ev-result {
+  display: none;
+}
+
+.ev-result.active { display: block; }
+
+.ev-hero {
+  text-align: center;
+  padding: 20px 0;
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.08), rgba(0, 191, 165, 0.05));
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+
+.ev-hero-label {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+}
+
+.ev-hero-value {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.ev-hero-sub {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.ev-matchup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.ev-matchup-car {
+  text-align: center;
+  flex: 1;
+}
+
+.ev-matchup-icon {
+  font-size: 2rem;
+  margin-bottom: 4px;
+}
+
+.ev-matchup-name {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  line-height: 1.3;
+}
+
+.ev-matchup-vs {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+}
+
+.ev-compare-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.ev-compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.ev-compare-header {
+  background: var(--bg-card);
+  padding: 10px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.ev-gas-col { color: var(--warning); }
+.ev-ev-col { color: var(--primary); }
+
+.ev-compare-label {
+  background: var(--bg-panel);
+  padding: 10px 8px;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.ev-compare-val {
+  background: var(--bg-panel);
+  padding: 10px 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.ev-compare-total {
+  font-weight: 700;
+  background: var(--bg-card);
+}
+
+.ev-purchase-info {
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.ev-purchase-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.ev-purchase-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
+}
+
+.ev-purchase-row:last-child { border-bottom: none; }
+
+.ev-purchase-total {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.ev-credit {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.ev-env-section {
+  margin-bottom: 16px;
+}
+
+.ev-env-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
 /* ---- Challenges ---- */
 .challenge-streak {
   display: flex;
@@ -981,10 +1141,10 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 4px 12px;
+  padding: 4px 6px;
   cursor: pointer;
   transition: color 0.2s;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
 .nav-btn.active {

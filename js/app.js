@@ -17,6 +17,7 @@
     tabChallenge: $('tabChallenge'),
     tabShop: $('tabShop'),
     tabLearn: $('tabLearn'),
+    tabEV: $('tabEV'),
     tabInfo: $('tabInfo'),
 
     // Carbon Calculator
@@ -62,6 +63,21 @@
     slrTrees: $('slrTrees'),
     solarChartBars: $('solarChartBars'),
 
+    // EV Calculator
+    evForm: $('evForm'),
+    evResult: $('evResult'),
+    evGasVehicle: $('evGasVehicle'),
+    evEVVehicle: $('evEVVehicle'),
+    evMiles: $('evMiles'),
+    evMilesVal: $('evMilesVal'),
+    evGasPrice: $('evGasPrice'),
+    evGasPriceVal: $('evGasPriceVal'),
+    evElecRate: $('evElecRate'),
+    evElecRateVal: $('evElecRateVal'),
+    evYears: $('evYears'),
+    btnCalcEV: $('btnCalcEV'),
+    btnRecalcEV: $('btnRecalcEV'),
+
     // Challenges
     streakCount: $('streakCount'),
     totalPoints: $('totalPoints'),
@@ -96,6 +112,7 @@
     setupNavigation();
     setupCarbonCalc();
     setupSolarCalc();
+    setupEVCalc();
     setupChallenges();
     setupShop();
     setupLearn();
@@ -279,6 +296,119 @@
     // Save
     try {
       localStorage.setItem('gs_last_solar', JSON.stringify(result));
+    } catch (e) { /* ignore */ }
+  }
+
+  // ============================================
+  // EV SWITCHING CALCULATOR
+  // ============================================
+  function setupEVCalc() {
+    // Populate vehicle dropdowns
+    const gasVehicles = window.evCalc.getGasVehicles();
+    const evVehicles = window.evCalc.getEVVehicles();
+
+    els.evGasVehicle.innerHTML = gasVehicles.map(v =>
+      `<option value="${v.id}">${v.label} (${v.mpg} MPG)</option>`
+    ).join('');
+
+    els.evEVVehicle.innerHTML = evVehicles.map(v =>
+      `<option value="${v.id}">${v.label} — ${v.range} mi${v.taxCredit > 0 ? ' ($' + v.taxCredit.toLocaleString() + ' credit)' : ''}</option>`
+    ).join('');
+
+    // Range sliders
+    els.evMiles.addEventListener('input', () => {
+      els.evMilesVal.textContent = parseInt(els.evMiles.value).toLocaleString() + ' mi';
+    });
+    els.evGasPrice.addEventListener('input', () => {
+      els.evGasPriceVal.textContent = '$' + parseFloat(els.evGasPrice.value).toFixed(2) + '/gal';
+    });
+    els.evElecRate.addEventListener('input', () => {
+      els.evElecRateVal.textContent = '$' + parseFloat(els.evElecRate.value).toFixed(2) + '/kWh';
+    });
+
+    // Calculate
+    els.btnCalcEV.addEventListener('click', calculateEV);
+    els.btnRecalcEV.addEventListener('click', () => {
+      els.evResult.classList.remove('active');
+      els.evResult.style.display = 'none';
+      els.evForm.style.display = 'block';
+    });
+  }
+
+  function calculateEV() {
+    const inputs = {
+      gasVehicle: els.evGasVehicle.value,
+      evVehicle: els.evEVVehicle.value,
+      annualMiles: parseInt(els.evMiles.value),
+      gasPrice: parseFloat(els.evGasPrice.value),
+      elecRate: parseFloat(els.evElecRate.value),
+      yearsToCompare: parseInt(els.evYears.value)
+    };
+
+    const result = window.evCalc.calculate(inputs);
+    if (result) renderEVResult(result);
+  }
+
+  function renderEVResult(r) {
+    els.evForm.style.display = 'none';
+    els.evResult.classList.add('active');
+    els.evResult.style.display = 'block';
+
+    // Hero
+    $('evResYears').textContent = r.years;
+    $('evResTotalSaving').textContent = '+$' + r.totalSavings.toLocaleString();
+    $('evResTotalSaving').style.color = r.totalSavings >= 0 ? 'var(--primary)' : 'var(--danger)';
+    $('evResPerYear').textContent = '~$' + Math.round(r.totalSavings / r.years).toLocaleString() + '/year in running cost savings';
+
+    // Matchup
+    $('evResGasName').textContent = r.gasVehicle;
+    $('evResEvName').textContent = r.evVehicle;
+
+    // Annual comparison grid
+    $('evResFuelGas').textContent = '$' + r.annualGasFuel.toLocaleString();
+    $('evResFuelEv').textContent = '$' + r.annualEvFuel.toLocaleString();
+    $('evResMaintGas').textContent = '$' + r.annualMaintGas.toLocaleString();
+    $('evResMaintEv').textContent = '$' + r.annualMaintEv.toLocaleString();
+    $('evResCpmGas').textContent = '$' + r.gasCostPerMile.toFixed(2);
+    $('evResCpmEv').textContent = '$' + r.evCostPerMile.toFixed(2);
+    $('evResTotalGas').textContent = '$' + (r.annualGasFuel + r.annualMaintGas).toLocaleString();
+    $('evResTotalEv').textContent = '$' + (r.annualEvFuel + r.annualMaintEv).toLocaleString();
+
+    // Purchase info
+    $('evResMsrp').textContent = '$' + r.evMsrp.toLocaleString();
+    $('evResCredit').textContent = r.evTaxCredit > 0 ? '-$' + r.evTaxCredit.toLocaleString() : 'N/A';
+    $('evResEffective').textContent = '$' + r.evEffectivePrice.toLocaleString();
+    $('evResRange').textContent = r.evRange + ' miles';
+
+    // Environmental
+    $('evResCO2Gas').textContent = r.annualGasCO2 + 't';
+    $('evResCO2Ev').textContent = r.annualEvCO2 + 't';
+    $('evResCO2Saved').textContent = r.annualCO2Saved + 't';
+    $('evResTotalCO2').textContent = r.totalCO2Saved + 't';
+    $('evResTrees').textContent = r.treesEquiv;
+
+    const emReduction = r.annualGasCO2 > 0 ? Math.round((r.annualCO2Saved / r.annualGasCO2) * 100) : 0;
+    $('evResEmReduce').textContent = emReduction + '%';
+
+    // Cumulative savings chart
+    const chartBars = $('evChartBars');
+    const maxSaving = Math.max(...r.yearlyData.map(d => d.savings));
+    // Show every other year or every 2 years for readability
+    const step = r.years <= 5 ? 1 : r.years <= 10 ? 2 : 3;
+    const displayYears = r.yearlyData.filter((d, i) => i % step === step - 1 || i === r.yearlyData.length - 1);
+
+    chartBars.innerHTML = displayYears.map(d => {
+      const height = Math.max(4, (d.savings / maxSaving) * 100);
+      return `
+        <div class="solar-chart-bar" style="height:${height}%;background:linear-gradient(to top, var(--primary-dim), var(--primary));" title="Year ${d.year}: $${d.savings.toLocaleString()} saved">
+          <span class="solar-chart-bar-label">Yr${d.year}</span>
+        </div>
+      `;
+    }).join('');
+
+    // Save
+    try {
+      localStorage.setItem('gs_last_ev', JSON.stringify(r));
     } catch (e) { /* ignore */ }
   }
 
