@@ -325,7 +325,7 @@
     ).join('');
 
     els.evEVVehicle.innerHTML = evVehicles.map(v =>
-      `<option value="${v.id}">${v.label} — ${v.range} mi${v.taxCredit > 0 ? ' ($' + v.taxCredit.toLocaleString() + ' credit)' : ''}</option>`
+      `<option value="${v.id}">${v.label} — ${v.range} mi${v.taxCredit > 0 ? ' ✓ $' + v.taxCredit.toLocaleString() + ' credit' : ' (no federal credit)'}</option>`
     ).join('');
 
     // Range sliders
@@ -389,7 +389,13 @@
 
     // Purchase info
     $('evResMsrp').textContent = '$' + r.evMsrp.toLocaleString();
-    $('evResCredit').textContent = r.evTaxCredit > 0 ? '-$' + r.evTaxCredit.toLocaleString() : 'N/A';
+    if (r.evTaxCredit > 0) {
+      $('evResCredit').textContent = '-$' + r.evTaxCredit.toLocaleString();
+      $('evResCredit').style.color = 'var(--primary)';
+    } else {
+      $('evResCredit').textContent = 'Expired (OBBBA)';
+      $('evResCredit').style.color = 'var(--danger)';
+    }
     $('evResEffective').textContent = '$' + r.evEffectivePrice.toLocaleString();
     $('evResRange').textContent = r.evRange + ' miles';
 

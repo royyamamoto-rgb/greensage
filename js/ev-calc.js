@@ -1,7 +1,8 @@
 /* ============================================
    GreenSage — EV Switching Calculator
    Compare gas car vs EV: savings, emissions, TCO
-   Data from DOE, EPA, AAA, EnergySage 2024
+   Data: DOE, EPA, AAA — Updated Feb 2026
+   Tax credits reflect OBBBA (July 2025) changes
    ============================================ */
 
 class EVCalc {
@@ -29,21 +30,27 @@ class EVCalc {
         'minivan':         { label: 'Minivan (Sienna, Odyssey)',        mpg: 25, maintenance: 1400 },
         'sports':          { label: 'Sports Car',                       mpg: 22, maintenance: 1800 }
       },
+      // Tax credits updated for OBBBA (July 2025):
+      // Exceeded 200K cap (NO credit): Tesla, GM, Ford, Toyota, Hyundai/Kia, BMW, Nissan, VW, Stellantis
+      // Still eligible (through Dec 31, 2026): Honda, Rivian, Lucid, Mercedes, Subaru, Volvo, Mazda
       ev: {
-        'tesla-3':         { label: 'Tesla Model 3',                miPerKwh: 3.8, msrp: 38990, maintenance: 500, range: 272, taxCredit: 7500 },
-        'tesla-y':         { label: 'Tesla Model Y',                miPerKwh: 3.5, msrp: 44990, maintenance: 500, range: 310, taxCredit: 7500 },
+        'tesla-3':         { label: 'Tesla Model 3',                miPerKwh: 3.8, msrp: 38990, maintenance: 500, range: 272, taxCredit: 0 },
+        'tesla-y':         { label: 'Tesla Model Y',                miPerKwh: 3.5, msrp: 44990, maintenance: 500, range: 310, taxCredit: 0 },
         'tesla-s':         { label: 'Tesla Model S',                miPerKwh: 3.3, msrp: 74990, maintenance: 600, range: 405, taxCredit: 0 },
-        'chevy-equinox':   { label: 'Chevy Equinox EV',            miPerKwh: 3.4, msrp: 33900, maintenance: 450, range: 319, taxCredit: 7500 },
-        'chevy-bolt':      { label: 'Chevy Bolt EUV',              miPerKwh: 3.6, msrp: 28795, maintenance: 450, range: 247, taxCredit: 7500 },
-        'ford-mach-e':     { label: 'Ford Mustang Mach-E',         miPerKwh: 3.2, msrp: 42995, maintenance: 500, range: 312, taxCredit: 3750 },
-        'ford-f150':       { label: 'Ford F-150 Lightning',        miPerKwh: 2.4, msrp: 49995, maintenance: 550, range: 320, taxCredit: 7500 },
-        'hyundai-ioniq5':  { label: 'Hyundai IONIQ 5',             miPerKwh: 3.5, msrp: 41800, maintenance: 450, range: 303, taxCredit: 7500 },
-        'hyundai-ioniq6':  { label: 'Hyundai IONIQ 6',             miPerKwh: 4.0, msrp: 42450, maintenance: 450, range: 361, taxCredit: 7500 },
-        'kia-ev6':         { label: 'Kia EV6',                     miPerKwh: 3.5, msrp: 42600, maintenance: 450, range: 310, taxCredit: 3750 },
+        'chevy-equinox':   { label: 'Chevy Equinox EV',            miPerKwh: 3.4, msrp: 33900, maintenance: 450, range: 319, taxCredit: 0 },
+        'chevy-bolt':      { label: 'Chevy Bolt EUV',              miPerKwh: 3.6, msrp: 28795, maintenance: 450, range: 247, taxCredit: 0 },
+        'ford-mach-e':     { label: 'Ford Mustang Mach-E',         miPerKwh: 3.2, msrp: 42995, maintenance: 500, range: 312, taxCredit: 0 },
+        'ford-f150':       { label: 'Ford F-150 Lightning',        miPerKwh: 2.4, msrp: 49995, maintenance: 550, range: 320, taxCredit: 0 },
+        'hyundai-ioniq5':  { label: 'Hyundai IONIQ 5',             miPerKwh: 3.5, msrp: 41800, maintenance: 450, range: 303, taxCredit: 0 },
+        'hyundai-ioniq6':  { label: 'Hyundai IONIQ 6',             miPerKwh: 4.0, msrp: 42450, maintenance: 450, range: 361, taxCredit: 0 },
+        'kia-ev6':         { label: 'Kia EV6',                     miPerKwh: 3.5, msrp: 42600, maintenance: 450, range: 310, taxCredit: 0 },
         'nissan-leaf':     { label: 'Nissan Leaf',                  miPerKwh: 3.5, msrp: 28140, maintenance: 400, range: 212, taxCredit: 0 },
-        'rivian-r1s':      { label: 'Rivian R1S',                  miPerKwh: 2.8, msrp: 75900, maintenance: 600, range: 321, taxCredit: 3750 },
+        'rivian-r1s':      { label: 'Rivian R1S',                  miPerKwh: 2.8, msrp: 75900, maintenance: 600, range: 321, taxCredit: 7500 },
         'bmw-ix':          { label: 'BMW iX',                      miPerKwh: 2.9, msrp: 87100, maintenance: 700, range: 324, taxCredit: 0 },
-        'vw-id4':          { label: 'Volkswagen ID.4',             miPerKwh: 3.2, msrp: 38995, maintenance: 450, range: 275, taxCredit: 7500 }
+        'vw-id4':          { label: 'Volkswagen ID.4',             miPerKwh: 3.2, msrp: 38995, maintenance: 450, range: 275, taxCredit: 0 },
+        'honda-prologue':  { label: 'Honda Prologue',              miPerKwh: 3.2, msrp: 47400, maintenance: 450, range: 296, taxCredit: 7500 },
+        'subaru-solterra': { label: 'Subaru Solterra',             miPerKwh: 3.1, msrp: 44995, maintenance: 450, range: 228, taxCredit: 7500 },
+        'mercedes-eqb':    { label: 'Mercedes-Benz EQB',           miPerKwh: 2.9, msrp: 52750, maintenance: 650, range: 245, taxCredit: 7500 }
       }
     };
 
