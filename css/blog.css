@@ -486,6 +486,83 @@ body {
   text-decoration: none;
 }
 
+/* ---- Affiliate CTA ---- */
+.affiliate-cta {
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-secondary));
+  border: 1px solid var(--accent-dark);
+  border-radius: 12px;
+  padding: 1.75rem;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.affiliate-cta .partner-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.affiliate-cta h3 {
+  color: var(--text-primary);
+  font-size: 1.15rem;
+  margin: 0 0 0.5rem;
+}
+
+.affiliate-cta p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.affiliate-cta-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.65rem 1.75rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.affiliate-cta-btn:hover {
+  background: var(--accent-light);
+  transform: translateY(-1px);
+  color: #fff;
+}
+
+.affiliate-disclosure {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-style: italic;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ---- Ad Slot Placeholder ---- */
+.ad-slot {
+  background: var(--bg-secondary);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  min-height: 90px;
+  margin: 2rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 600px) {
   .blog-nav {
