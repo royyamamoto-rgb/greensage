@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0a1a0a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="AI-powered sustainable living coach. Calculate your carbon footprint, track green challenges, discover solar savings, and shop eco-friendly products.">
+  <title>GreenSage — Sustainable Living Coach</title>
+  <link rel="manifest" href="manifest.json?v=1">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <link rel="stylesheet" href="css/styles.css?v=1">
+</head>
+<body>
+
+<!-- ==================== LANDING PAGE ==================== -->
+<div class="landing-page" id="landingPage">
+  <div class="landing-logo">🌿</div>
+  <h1 class="landing-title">GreenSage</h1>
+  <p class="landing-subtitle">Your AI-powered sustainable living coach. Calculate your carbon footprint, take daily green challenges, and discover solar savings.</p>
+
+  <div class="landing-features">
+    <div class="landing-feature">
+      <div class="landing-feature-icon">🌍</div>
+      <div class="landing-feature-title">Carbon Calculator</div>
+      <div class="landing-feature-desc">Measure your footprint across transport, energy, food & lifestyle</div>
+    </div>
+    <div class="landing-feature">
+      <div class="landing-feature-icon">☀️</div>
+      <div class="landing-feature-title">Solar Savings</div>
+      <div class="landing-feature-desc">Estimate your solar panel savings based on your location</div>
+    </div>
+    <div class="landing-feature">
+      <div class="landing-feature-icon">🏆</div>
+      <div class="landing-feature-title">Green Challenges</div>
+      <div class="landing-feature-desc">Daily eco challenges with streak tracking & impact scores</div>
+    </div>
+    <div class="landing-feature">
+      <div class="landing-feature-icon">🛒</div>
+      <div class="landing-feature-title">Eco Shop</div>
+      <div class="landing-feature-desc">Curated sustainable products for every area of life</div>
+    </div>
+  </div>
+
+  <div class="landing-stats">
+    <div class="landing-stat">
+      <div class="landing-stat-value">16 tons</div>
+      <div class="landing-stat-label">avg US footprint/yr</div>
+    </div>
+    <div class="landing-stat">
+      <div class="landing-stat-value">4 tons</div>
+      <div class="landing-stat-label">sustainable target</div>
+    </div>
+  </div>
+
+  <div class="landing-cta">
+    <button class="btn-primary" onclick="enterApp()">Start Your Green Journey</button>
+  </div>
+
+  <div class="landing-badges">
+    <span class="landing-badge">100% Free</span>
+    <span class="landing-badge">No Account Needed</span>
+    <span class="landing-badge">Works Offline</span>
+    <span class="landing-badge">Privacy First</span>
+  </div>
+</div>
+
+<!-- ==================== APP CONTAINER ==================== -->
+<div class="app-container" id="appContainer">
+
+  <!-- Header -->
+  <div class="app-header">
+    <div class="app-header-title">🌿 GreenSage</div>
+    <div class="header-controls">
+      <button class="header-btn" id="btnShare" title="Share">📤</button>
+      <button class="header-btn" id="btnHome" title="Add to Home Screen">📱</button>
+    </div>
+  </div>
+
+  <!-- ====== TAB: EcoScore (Carbon Calculator) ====== -->
+  <div class="tab-content active" id="tabCarbon">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">🌍</span>
+        <div>
+          <div class="card-title">Carbon Footprint Calculator</div>
+          <div class="card-subtitle">Estimate your annual CO₂ emissions</div>
+        </div>
+      </div>
+
+      <div id="carbonForm">
+        <!-- Transport -->
+        <div class="form-group">
+          <label class="form-label">🚗 How do you commute?</label>
+          <select class="form-select" id="cfTransport">
+            <option value="car-gas">Car (Gasoline)</option>
+            <option value="car-diesel">Car (Diesel)</option>
+            <option value="car-hybrid">Car (Hybrid)</option>
+            <option value="car-ev">Electric Vehicle</option>
+            <option value="public">Public Transit</option>
+            <option value="bike">Bicycle / Walk</option>
+            <option value="wfh">Work from Home</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">📏 Weekly commute distance (miles)</label>
+          <input type="range" class="form-range" id="cfDistance" min="0" max="500" value="100">
+          <div class="range-labels">
+            <span>0 mi</span>
+            <span id="cfDistanceVal">100 mi</span>
+            <span>500 mi</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">✈️ Flights per year</label>
+          <select class="form-select" id="cfFlights">
+            <option value="0">None</option>
+            <option value="1">1-2 short flights</option>
+            <option value="3">3-5 flights</option>
+            <option value="6">6-10 flights</option>
+            <option value="12">10+ flights</option>
+          </select>
+        </div>
+
+        <!-- Home Energy -->
+        <div class="form-group">
+          <label class="form-label">🏠 Home energy source</label>
+          <select class="form-select" id="cfEnergy">
+            <option value="gas">Natural Gas</option>
+            <option value="electric-grid">Electric (Grid)</option>
+            <option value="electric-green">Electric (Green/Solar)</option>
+            <option value="oil">Heating Oil</option>
+            <option value="mixed">Mixed Sources</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">💡 Monthly electricity bill ($)</label>
+          <input type="range" class="form-range" id="cfElecBill" min="0" max="500" value="120">
+          <div class="range-labels">
+            <span>$0</span>
+            <span id="cfElecBillVal">$120</span>
+            <span>$500</span>
+          </div>
+        </div>
+
+        <!-- Food -->
+        <div class="form-group">
+          <label class="form-label">🍽️ Diet type</label>
+          <select class="form-select" id="cfDiet">
+            <option value="heavy-meat">Heavy Meat Eater</option>
+            <option value="medium-meat">Average Meat Eater</option>
+            <option value="low-meat">Low Meat / Flexitarian</option>
+            <option value="pescatarian">Pescatarian</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="vegan">Vegan</option>
+          </select>
+        </div>
+
+        <!-- Lifestyle -->
+        <div class="form-group">
+          <label class="form-label">🛍️ Shopping habits</label>
+          <select class="form-select" id="cfShopping">
+            <option value="high">Frequent shopper (weekly)</option>
+            <option value="medium">Average (1-2x month)</option>
+            <option value="low">Minimal / Second-hand</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">♻️ Do you recycle?</label>
+          <select class="form-select" id="cfRecycle">
+            <option value="none">No recycling</option>
+            <option value="some">Some recycling</option>
+            <option value="most">Recycle most items</option>
+            <option value="all">Recycle + compost everything</option>
+          </select>
+        </div>
+
+        <button class="btn btn-green" id="btnCalcCarbon">Calculate My Footprint</button>
+      </div>
+
+      <!-- Results -->
+      <div class="eco-result" id="carbonResult">
+        <div class="eco-score-circle" id="ecoScoreCircle">
+          <div class="eco-score-value" id="ecoScoreValue">--</div>
+          <div class="eco-score-unit">tons CO₂/yr</div>
+        </div>
+        <div class="eco-score-label" id="ecoScoreLabel">--</div>
+        <div class="eco-score-desc" id="ecoScoreDesc">--</div>
+
+        <div class="eco-breakdown" id="ecoBreakdown"></div>
+
+        <div class="eco-tips" id="ecoTips"></div>
+
+        <button class="btn btn-outline" id="btnRecalc" style="margin-top:16px;">Recalculate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== TAB: Solar Calculator ====== -->
+  <div class="tab-content" id="tabSolar">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-icon">☀️</span>
+        <div>
+          <div class="card-title">Solar Savings Calculator</div>
+          <div class="card-subtitle">Estimate your solar panel investment & returns</div>
+        </div>
+      </div>
+
+      <div id="solarForm">
+        <div class="form-group">
+          <label class="form-label">💡 Monthly electricity bill ($)</label>
+          <input type="range" class="form-range" id="slrBill" min="50" max="600" value="150">
+          <div class="range-labels">
+            <span>$50</span>
+            <span id="slrBillVal">$150</span>
+            <span>$600</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">📐 Roof size (sq ft, south-facing)</label>
+          <input type="range" class="form-range" id="slrRoof" min="100" max="2000" value="500">
+          <div class="range-labels">
+            <span>100</span>
+            <span id="slrRoofVal">500 sq ft</span>
+            <span>2000</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">🌤️ Your region's sun exposure</label>
+          <select class="form-select" id="slrSun">
+            <option value="5.5">High Sun (AZ, NV, TX, FL, CA) — ~5.5 hrs/day</option>
+            <option value="4.5" selected>Moderate Sun (Most US) — ~4.5 hrs/day</option>
+            <option value="3.5">Low Sun (WA, OR, NY, MI) — ~3.5 hrs/day</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">⚡ Electricity rate ($/kWh)</label>
+          <input type="range" class="form-range" id="slrRate" min="0.05" max="0.40" step="0.01" value="0.13">
+          <div class="range-labels">
+            <span>$0.05</span>
+            <span id="slrRateVal">$0.13/kWh</span>
+            <span>$0.40</span>
+          </div>
+        </div>
+
+        <button class="btn btn-accent" id="btnCalcSolar">Calculate Solar Savings</button>
+      </div>
+
+      <div class="solar-result" id="solarResult">
+        <div class="solar-hero">
+          <div class="solar-hero-value" id="slrSavings25">--</div>
+          <div class="solar-hero-label">Estimated 25-Year Savings</div>
+        </div>
+
+        <div class="solar-stats">
+          <div class="solar-stat">
+            <div class="solar-stat-value" id="slrSystemKW">--</div>
+            <div class="solar-stat-label">System Size (kW)</div>
+          </div>
+          <div class="solar-stat">
+            <div class="solar-stat-value" id="slrInstallCost">--</div>
+            <div class="solar-stat-label">Est. Install Cost</div>
+          </div>
+          <div class="solar-stat">
+            <div class="solar-stat-value" id="slrPayback">--</div>
+            <div class="solar-stat-label">Payback Period</div>
+          </div>
+        </div>
+
+        <div class="solar-stats" style="margin-top:4px;">
+          <div class="solar-stat">
+            <div class="solar-stat-value" id="slrMonthlySave">--</div>
+            <div class="solar-stat-label">Monthly Savings</div>
+          </div>
+          <div class="solar-stat">
+            <div class="solar-stat-value" id="slrCO2">--</div>
+            <div class="solar-stat-label">CO₂ Offset/yr</div>
+          </div>
+          <div class="solar-stat">
+            <div class="solar-stat-value" id="slrTrees">--</div>
+            <div class="solar-stat-label">Trees Equivalent</div>
+          </div>
+        </div>
+
+        <div class="solar-chart" id="solarChart">
+          <div class="solar-chart-title">Monthly Production Estimate (kWh)</div>
+          <div class="solar-chart-bars" id="solarChartBars"></div>
+        </div>
+
+        <button class="btn btn-outline" id="btnRecalcSolar" style="margin-top:16px;">Recalculate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== TAB: Green Challenges ====== -->
+  <div class="tab-content" id="tabChallenge">
+    <div class="challenge-streak" id="streakBar">
+      <div class="streak-fire">🔥</div>
+      <div>
+        <div class="streak-count" id="streakCount">0</div>
+        <div class="streak-label">Day Streak</div>
+      </div>
+      <div style="margin-left:auto; text-align:right;">
+        <div class="streak-count" style="font-size:1.2rem;" id="totalPoints">0</div>
+        <div class="streak-label">Total Points</div>
+      </div>
+    </div>
+
+    <div class="challenge-progress">
+      <div class="progress-text">
+        <span id="challengeProgressLabel">Today's Progress</span>
+        <span id="challengeProgressVal">0 / 3</span>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="challengeProgressBar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div id="challengeList"></div>
+  </div>
+
+  <!-- ====== TAB: Green Shop ====== -->
+  <div class="tab-content" id="tabShop">
+    <div class="card" style="padding:12px 16px;">
+      <div class="card-title" style="margin-bottom:4px;">🛒 Eco-Friendly Products</div>
+      <div class="card-subtitle">Curated sustainable alternatives</div>
+    </div>
+
+    <div class="shop-categories" id="shopCategories">
+      <button class="shop-cat-btn active" data-cat="all">All</button>
+      <button class="shop-cat-btn" data-cat="kitchen">Kitchen</button>
+      <button class="shop-cat-btn" data-cat="bathroom">Bath</button>
+      <button class="shop-cat-btn" data-cat="energy">Energy</button>
+      <button class="shop-cat-btn" data-cat="outdoor">Outdoor</button>
+      <button class="shop-cat-btn" data-cat="cleaning">Cleaning</button>
+      <button class="shop-cat-btn" data-cat="tech">Tech</button>
+    </div>
+
+    <div class="shop-grid" id="shopGrid"></div>
+  </div>
+
+  <!-- ====== TAB: Learn (MasterTeach) ====== -->
+  <div class="tab-content" id="tabLearn">
+    <div class="card" style="padding:12px 16px;">
+      <div class="card-title" style="margin-bottom:4px;">📚 Green Knowledge</div>
+      <div class="card-subtitle">Learn about sustainable living & green energy</div>
+    </div>
+
+    <div id="learnList"></div>
+    <div class="learn-content" id="learnContent"></div>
+  </div>
+
+  <!-- ====== TAB: Info ====== -->
+  <div class="tab-content" id="tabInfo">
+    <div class="card">
+      <div class="info-section">
+        <div class="info-section-title">About GreenSage</div>
+        <div class="info-text">GreenSage is your AI-powered sustainable living coach. Built to help you understand your environmental impact and take meaningful action to reduce it.</div>
+        <div class="info-text">We believe small daily choices can create massive positive change. Whether it's reducing your carbon footprint, switching to solar energy, or choosing eco-friendly products — every action counts.</div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">How to Use</div>
+        <div class="info-subtitle">🌍 Carbon Calculator</div>
+        <div class="info-text">Answer questions about your transport, energy, diet, and shopping habits. Get a personalized carbon footprint score with actionable tips to reduce your emissions.</div>
+        <div class="info-subtitle">☀️ Solar Calculator</div>
+        <div class="info-text">Enter your electricity bill, roof size, and location to estimate solar panel savings over 25 years. Includes system size, cost, payback period, and CO₂ offset.</div>
+        <div class="info-subtitle">🏆 Green Challenges</div>
+        <div class="info-text">Complete 3 daily eco-challenges to build your streak. Earn points and track your cumulative environmental impact. New challenges every day.</div>
+        <div class="info-subtitle">🛒 Eco Shop</div>
+        <div class="info-text">Browse curated sustainable products across categories. Each product shows its environmental impact. Links go to Amazon for easy purchasing.</div>
+        <div class="info-subtitle">📚 Learn</div>
+        <div class="info-text">Educational articles about green energy, sustainable living, climate science, and practical tips for reducing your environmental impact.</div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">Add to Home Screen</div>
+        <div class="info-text"><strong>iPhone/iPad:</strong> Open in Safari → Tap the Share button (box with arrow) → Scroll down → Tap "Add to Home Screen"</div>
+        <div class="info-text"><strong>Android:</strong> Open in Chrome → Tap the menu (⋮) → Tap "Add to home screen" or "Install app"</div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">Your Data</div>
+        <div class="info-text">All your data (challenges, streaks, calculator history) is stored locally on your device using localStorage. Nothing is sent to any server. If you clear your browser data, your progress will be reset.</div>
+        <div class="info-text">To preserve your data, add the app to your home screen and avoid clearing browser cache for this site.</div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">Legal & Disclaimer</div>
+        <div class="info-text"><strong>Disclaimer:</strong> GreenSage provides estimates for educational purposes only. Carbon footprint calculations are approximations based on average data and may not reflect your exact situation. Solar savings estimates are based on national averages and actual results may vary based on local factors.</div>
+        <div class="info-text"><strong>Affiliate Disclosure:</strong> Product links in the Eco Shop may contain affiliate links. We earn a small commission at no extra cost to you, which helps keep this app free.</div>
+        <div class="info-text"><strong>Privacy:</strong> We do not collect, store, or transmit any personal information. All calculations run locally on your device.</div>
+        <div class="info-text"><strong>Sources:</strong> Carbon emission factors from EPA (2023), IPCC AR6 (2021), Our World in Data. Solar data from NREL PVWatts Calculator and EnergySage market data.</div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">Version</div>
+        <div class="info-text">GreenSage v1.0 — Built with purpose. 🌿</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app-container -->
+
+<!-- ==================== SHARE ACTION SHEET ==================== -->
+<div class="share-sheet" id="shareSheet">
+  <div class="share-sheet-title">Share & Install</div>
+  <button class="share-sheet-btn" id="btnShareLink">
+    <span class="share-sheet-btn-icon">🔗</span> Share Link with Friends
+  </button>
+  <button class="share-sheet-btn" id="btnAddHome">
+    <span class="share-sheet-btn-icon">📱</span> Add to Home Screen
+  </button>
+  <button class="share-sheet-cancel" id="btnShareCancel">Cancel</button>
+</div>
+
+<!-- iOS Install Modal -->
+<div class="modal-overlay" id="iosInstallModal">
+  <div class="modal ios-install-modal">
+    <div class="modal-title">Add to Home Screen</div>
+    <div class="modal-text">Install GreenSage for the best experience:</div>
+    <div class="ios-step">
+      <div class="ios-step-num">1</div>
+      <div class="ios-step-text">Tap the <strong>Share</strong> button (📤) in Safari's bottom toolbar</div>
+    </div>
+    <div class="ios-step">
+      <div class="ios-step-num">2</div>
+      <div class="ios-step-text">Scroll down and tap <strong>"Add to Home Screen"</strong></div>
+    </div>
+    <div class="ios-step">
+      <div class="ios-step-num">3</div>
+      <div class="ios-step-text">Tap <strong>"Add"</strong> in the top right corner</div>
+    </div>
+    <button class="modal-close" onclick="document.getElementById('iosInstallModal').classList.remove('active')">Got it</button>
+  </div>
+</div>
+
+<!-- ==================== BOTTOM NAV ==================== -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="nav-btn active" data-tab="tabCarbon">
+    <span>🌍</span>
+    <span class="nav-btn-label">EcoScore</span>
+  </button>
+  <button class="nav-btn" data-tab="tabSolar">
+    <span>☀️</span>
+    <span class="nav-btn-label">Solar</span>
+  </button>
+  <button class="nav-btn" data-tab="tabChallenge">
+    <span>🏆</span>
+    <span class="nav-btn-label">Challenges</span>
+  </button>
+  <button class="nav-btn" data-tab="tabShop">
+    <span>🛒</span>
+    <span class="nav-btn-label">Shop</span>
+  </button>
+  <button class="nav-btn" data-tab="tabLearn">
+    <span>📚</span>
+    <span class="nav-btn-label">Learn</span>
+  </button>
+  <button class="nav-btn" data-tab="tabInfo">
+    <span>ℹ️</span>
+    <span class="nav-btn-label">Info</span>
+  </button>
+</nav>
+
+<!-- ==================== SCRIPTS ==================== -->
+<script>
+// Service worker registration for PWA install
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+// Landing page entry
+function enterApp() {
+  document.getElementById('landingPage').style.display = 'none';
+  document.getElementById('appContainer').classList.add('active');
+  sessionStorage.setItem('gs_entered', '1');
+}
+
+// Auto-enter if already visited
+if (sessionStorage.getItem('gs_entered')) {
+  document.getElementById('landingPage').style.display = 'none';
+  document.getElementById('appContainer').classList.add('active');
+}
+</script>
+<script src="js/carbon-calc.js?v=1"></script>
+<script src="js/solar-calc.js?v=1"></script>
+<script src="js/challenges.js?v=1"></script>
+<script src="js/green-shop.js?v=1"></script>
+<script src="js/learn.js?v=1"></script>
+<script src="js/app.js?v=1"></script>
+</body>
+</html>
