@@ -131,6 +131,8 @@
     setupLearn();
     setupShareActions();
     setupInstallPrompt();
+    setupShareResults();
+    setupEmailCapture();
   }
 
   // ============================================
@@ -190,6 +192,8 @@
     };
 
     const result = window.carbonCalc.calculate(inputs);
+    window.carbonCalc.lastResult = result;
+    trackCalcUse();
     renderCarbonResult(result);
   }
 
@@ -274,6 +278,8 @@
     };
 
     const result = window.solarCalc.calculate(inputs);
+    window.solarCalc.lastResult = result;
+    trackCalcUse();
     renderSolarResult(result);
   }
 
@@ -359,7 +365,10 @@
     };
 
     const result = window.evCalc.calculate(inputs);
-    if (result) renderEVResult(result);
+    if (result) {
+      trackCalcUse();
+      renderEVResult(result);
+    }
   }
 
   function renderEVResult(r) {
@@ -756,6 +765,118 @@
       e.preventDefault();
       deferredInstallPrompt = e;
     });
+  }
+
+  // ============================================
+  // SHAREABLE CALCULATOR RESULTS
+  // ============================================
+  function setupShareResults() {
+    // Carbon share
+    const btnShareCarbon = $('btnShareCarbon');
+    if (btnShareCarbon) {
+      btnShareCarbon.addEventListener('click', () => {
+        const r = window.carbonCalc.lastResult;
+        if (!r) return;
+        shareText(
+          'My Carbon Footprint Results',
+          `My carbon footprint is ${r.total} tons CO₂/year (Grade ${r.grade}). US average is ${r.usAvg}t. Sustainable target is ${r.target}t.\n\nCalculate yours free:`
+        );
+      });
+    }
+
+    // Solar share
+    const btnShareSolar = $('btnShareSolar');
+    if (btnShareSolar) {
+      btnShareSolar.addEventListener('click', () => {
+        const r = window.solarCalc.lastResult;
+        if (!r) return;
+        shareText(
+          'My Solar Savings Estimate',
+          `My solar estimate: ${r.systemKW} kW system could save $${r.totalSavings25.toLocaleString()} over 25 years! Payback in ${r.paybackYears} years, offsetting ${r.annualCO2Offset}t CO₂/year.\n\nCalculate yours free:`
+        );
+      });
+    }
+
+    // EV share
+    const btnShareEV = $('btnShareEV');
+    if (btnShareEV) {
+      btnShareEV.addEventListener('click', () => {
+        const r = window.evCalc.lastResult;
+        if (!r) return;
+        shareText(
+          'My EV vs Gas Comparison',
+          `Switching from ${r.gasVehicle} to ${r.evVehicle} could save $${r.totalSavings.toLocaleString()} over ${r.years} years and prevent ${r.totalCO2Saved}t of CO₂!\n\nCompare yours free:`
+        );
+      });
+    }
+  }
+
+  function shareText(title, text) {
+    const url = window.location.href;
+    if (navigator.share) {
+      navigator.share({ title, text: text + '\n' + url, url }).catch(() => {});
+    } else {
+      const full = text + '\n' + url;
+      navigator.clipboard.writeText(full).then(() => {
+        alert('Results copied to clipboard! Paste to share.');
+      }).catch(() => {
+        alert(full);
+      });
+    }
+  }
+
+  // ============================================
+  // EMAIL CAPTURE & LEAD GEN
+  // ============================================
+  function setupEmailCapture() {
+    // Modal email submit
+    const btnEmailSubmit = $('btnEmailSubmit');
+    if (btnEmailSubmit) {
+      btnEmailSubmit.addEventListener('click', () => {
+        const email = $('emailInput').value.trim();
+        if (email && email.includes('@')) {
+          captureEmail(email, 'modal');
+          $('emailCaptureForm').style.display = 'none';
+          $('emailSuccess').style.display = 'block';
+        }
+      });
+    }
+
+    // Landing page email
+    const btnLandingEmail = $('btnLandingEmail');
+    if (btnLandingEmail) {
+      btnLandingEmail.addEventListener('click', () => {
+        const email = $('landingEmailInput').value.trim();
+        if (email && email.includes('@')) {
+          captureEmail(email, 'landing');
+          btnLandingEmail.textContent = 'Subscribed!';
+          btnLandingEmail.disabled = true;
+          $('landingEmailInput').disabled = true;
+        }
+      });
+    }
+
+    // Show email popup after 3rd calculator use (non-intrusive timing)
+    const calcCount = parseInt(localStorage.getItem('gs_calc_count') || '0');
+    if (calcCount >= 3 && !localStorage.getItem('gs_email_captured') && !localStorage.getItem('gs_email_dismissed')) {
+      setTimeout(() => {
+        $('emailCaptureModal').classList.add('active');
+      }, 2000);
+    }
+  }
+
+  function captureEmail(email, source) {
+    // Store locally — ready for integration with Mailchimp/ConvertKit/Beehiiv
+    const subscribers = JSON.parse(localStorage.getItem('gs_subscribers') || '[]');
+    subscribers.push({ email, source, date: new Date().toISOString() });
+    localStorage.setItem('gs_subscribers', JSON.stringify(subscribers));
+    localStorage.setItem('gs_email_captured', '1');
+  }
+
+  // Track calculator usage for email popup trigger
+  function trackCalcUse() {
+    const count = parseInt(localStorage.getItem('gs_calc_count') || '0') + 1;
+    localStorage.setItem('gs_calc_count', String(count));
   }
 
   // ============================================

@@ -6,11 +6,93 @@
   <meta name="theme-color" content="#0a1a0a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="description" content="AI-powered sustainable living coach. Calculate your carbon footprint, track green challenges, discover solar savings, and shop eco-friendly products.">
-  <title>GreenSage — Sustainable Living Coach</title>
-  <link rel="manifest" href="manifest.json?v=4">
+  <meta name="description" content="Free solar savings calculator, EV vs gas comparison, carbon footprint calculator, and government incentive finder. Save money going green with GreenSage.">
+  <title>GreenSage — Solar Savings Calculator, EV Calculator & Green Living Coach</title>
+
+  <!-- SEO: Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://greensage.pages.dev/">
+  <meta property="og:title" content="GreenSage — Solar Savings, EV Calculator & Green Incentives">
+  <meta property="og:description" content="Free calculators: Solar panel savings, EV vs gas comparison, carbon footprint + federal/state incentive finder for 2026. Save thousands going green.">
+  <meta property="og:image" content="https://greensage.pages.dev/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="GreenSage">
+
+  <!-- SEO: Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GreenSage — Solar Savings, EV Calculator & Green Incentives">
+  <meta name="twitter:description" content="Free calculators: Solar panel savings, EV vs gas comparison, carbon footprint + federal/state incentive finder for 2026.">
+  <meta name="twitter:image" content="https://greensage.pages.dev/assets/og-image.png">
+
+  <!-- SEO: Additional meta -->
+  <meta name="keywords" content="solar savings calculator, EV vs gas calculator, carbon footprint calculator, green incentives 2026, federal EV tax credit, solar panel cost, electric vehicle comparison, sustainable living, eco products, OBBBA tax credits">
+  <meta name="author" content="GreenSage">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://greensage.pages.dev/">
+
+  <!-- SEO: JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "GreenSage",
+    "alternateName": "GreenSage Sustainable Living Coach",
+    "url": "https://greensage.pages.dev/",
+    "description": "Free solar savings calculator, EV vs gas comparison, carbon footprint calculator, and government incentive finder. Save money going green.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Solar Panel Savings Calculator",
+      "EV vs Gas Vehicle Comparison",
+      "Carbon Footprint Calculator",
+      "Federal & State Green Incentive Finder",
+      "Daily Green Challenges",
+      "Eco-Friendly Product Shop"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How much can I save with solar panels in 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Average US homeowners can save $20,000-$60,000 over 25 years with solar panels. Use GreenSage's free solar calculator to estimate savings based on your electricity bill, roof size, and location. Note: The federal 30% Solar ITC expired Dec 31, 2025 under OBBBA, but many state incentives remain."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is the federal EV tax credit still available in 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The $7,500 federal EV tax credit expired Sept 30, 2025 for most major manufacturers (Tesla, GM, Ford, Hyundai/Kia, BMW, Nissan, VW) under the One Big Beautiful Bill Act. A limited credit continues through Dec 31, 2026 ONLY for Honda, Rivian, Lucid, Mercedes, Subaru, and Volvo. A new Auto Loan Interest Deduction (up to $10,000/year) is available for all US-assembled vehicles through 2028."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does it cost to switch from gas to electric vehicle?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The average EV driver saves $800-$1,500 per year in fuel costs compared to gas. Use GreenSage's free EV calculator to compare your specific gas car against 17 electric vehicles including Tesla, Chevy, Ford, Hyundai, Honda, and Rivian models with real fuel, maintenance, and total cost data."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="manifest" href="manifest.json?v=5">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
-  <link rel="stylesheet" href="css/styles.css?v=4">
+  <link rel="stylesheet" href="css/styles.css?v=5">
 </head>
 <body>
 
@@ -73,6 +155,15 @@
     <span class="landing-badge">No Account Needed</span>
     <span class="landing-badge">Works Offline</span>
     <span class="landing-badge">Privacy First</span>
+  </div>
+
+  <!-- Landing page email capture -->
+  <div class="landing-email-capture">
+    <div class="landing-email-title">📬 Weekly Green Savings Tips</div>
+    <div class="landing-email-row">
+      <input type="email" class="form-input" id="landingEmailInput" placeholder="your@email.com" autocomplete="email">
+      <button class="btn btn-green btn-sm" id="btnLandingEmail">Subscribe</button>
+    </div>
   </div>
 </div>
 
@@ -235,7 +326,8 @@
           </div>
         </div>
 
-        <button class="btn btn-outline" id="btnRecalc" style="margin-top:16px;">Recalculate</button>
+        <button class="btn btn-outline" id="btnShareCarbon" style="margin-top:16px;">📤 Share My Results</button>
+        <button class="btn btn-outline" id="btnRecalc" style="margin-top:8px;">Recalculate</button>
       </div>
     </div>
   </div>
@@ -356,7 +448,18 @@
           </div>
         </div>
 
-        <button class="btn btn-outline" id="btnRecalcSolar" style="margin-top:16px;">Recalculate</button>
+        <!-- Solar Lead Gen CTA -->
+        <div class="lead-gen-cta" id="solarLeadCta">
+          <div class="lead-gen-icon">☀️</div>
+          <div class="lead-gen-text">
+            <div class="lead-gen-title">Ready to go solar? Get free quotes from local installers</div>
+            <div class="lead-gen-sub">Compare 3-5 quotes. Average homeowner saves $20K-$60K.</div>
+          </div>
+          <button class="btn btn-accent btn-sm" onclick="document.getElementById('solarQuoteModal').classList.add('active')">Get Quotes</button>
+        </div>
+
+        <button class="btn btn-outline" id="btnShareSolar" style="margin-top:12px;">📤 Share My Results</button>
+        <button class="btn btn-outline" id="btnRecalcSolar" style="margin-top:8px;">Recalculate</button>
       </div>
     </div>
   </div>
@@ -561,7 +664,8 @@
           </div>
         </div>
 
-        <button class="btn btn-outline" id="btnRecalcEV" style="margin-top:16px;">Recalculate</button>
+        <button class="btn btn-outline" id="btnShareEV" style="margin-top:12px;">📤 Share My Results</button>
+        <button class="btn btn-outline" id="btnRecalcEV" style="margin-top:8px;">Recalculate</button>
       </div>
     </div>
   </div>
@@ -780,6 +884,41 @@
   </div>
 </div>
 
+<!-- ==================== EMAIL CAPTURE MODAL ==================== -->
+<div class="modal-overlay" id="emailCaptureModal">
+  <div class="modal">
+    <div class="modal-title">🌿 Get Your Free Green Savings Guide</div>
+    <div class="modal-text">Join 10,000+ homeowners saving money while going green. Get weekly tips on solar, EVs, rebates, and eco-living.</div>
+    <div class="email-capture-form" id="emailCaptureForm">
+      <input type="email" class="form-input" id="emailInput" placeholder="your@email.com" autocomplete="email">
+      <button class="btn btn-green" id="btnEmailSubmit" style="margin-top:10px;">Get Free Guide</button>
+      <div class="email-capture-note">No spam. Unsubscribe anytime. Your data stays private.</div>
+    </div>
+    <div class="email-capture-success" id="emailSuccess" style="display:none;">
+      <div style="font-size:2rem; margin-bottom:8px;">🎉</div>
+      <div style="font-size:0.95rem; font-weight:600; margin-bottom:4px;">You're in!</div>
+      <div class="info-text">Check your inbox for your free Green Savings Guide.</div>
+    </div>
+    <button class="modal-close" onclick="document.getElementById('emailCaptureModal').classList.remove('active')">Not now</button>
+  </div>
+</div>
+
+<!-- ==================== SOLAR QUOTE MODAL ==================== -->
+<div class="modal-overlay" id="solarQuoteModal">
+  <div class="modal">
+    <div class="modal-title">☀️ Get Free Solar Quotes</div>
+    <div class="modal-text">Compare quotes from top-rated local solar installers. Free, no obligation — see how much you can save.</div>
+    <div class="solar-quote-benefits">
+      <div class="solar-quote-item">✓ Compare 3-5 installer quotes</div>
+      <div class="solar-quote-item">✓ Average savings: $20,000-$60,000 over 25 years</div>
+      <div class="solar-quote-item">✓ Check state rebates & financing options</div>
+      <div class="solar-quote-item">✓ 100% free, no obligation</div>
+    </div>
+    <a class="btn btn-accent" id="btnSolarQuote" href="https://www.energysage.com/register/?rc=greensage" target="_blank" rel="noopener" style="margin-top:12px; text-decoration:none;">Get My Free Quotes →</a>
+    <button class="modal-close" onclick="document.getElementById('solarQuoteModal').classList.remove('active')" style="margin-top:8px;">Maybe later</button>
+  </div>
+</div>
+
 <!-- ==================== BOTTOM NAV ==================== -->
 <nav class="bottom-nav" id="bottomNav">
   <button class="nav-btn active" data-tab="tabCarbon">
@@ -836,13 +975,13 @@ if (sessionStorage.getItem('gs_entered')) {
   document.getElementById('appContainer').classList.add('active');
 }
 </script>
-<script src="js/carbon-calc.js?v=4"></script>
-<script src="js/solar-calc.js?v=4"></script>
-<script src="js/ev-calc.js?v=4"></script>
-<script src="js/incentives.js?v=4"></script>
-<script src="js/challenges.js?v=4"></script>
-<script src="js/green-shop.js?v=4"></script>
-<script src="js/learn.js?v=4"></script>
-<script src="js/app.js?v=4"></script>
+<script src="js/carbon-calc.js?v=5"></script>
+<script src="js/solar-calc.js?v=5"></script>
+<script src="js/ev-calc.js?v=5"></script>
+<script src="js/incentives.js?v=5"></script>
+<script src="js/challenges.js?v=5"></script>
+<script src="js/green-shop.js?v=5"></script>
+<script src="js/learn.js?v=5"></script>
+<script src="js/app.js?v=5"></script>
 </body>
 </html>
