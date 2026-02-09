@@ -43,7 +43,23 @@ class GreenShop {
       // Tech
       { cat: 'tech', icon: '📱', name: 'Eco Phone Case', desc: 'Biodegradable phone case made from plant-based materials. Fully compostable.', impact: 'Compostable in 2 years', search: 'biodegradable+phone+case+compostable+eco' },
       { cat: 'tech', icon: '🔌', name: 'Energy Monitor', desc: 'Whole-home energy monitor. Track exactly where electricity goes and find waste.', impact: 'Typical 10-15% energy reduction', search: 'home+energy+monitor+electricity+usage+tracker' },
-      { cat: 'tech', icon: '💧', name: 'Smart Water Monitor', desc: 'WiFi water flow sensor. Detects leaks and tracks usage in real-time.', impact: 'Saves ~10% on water bills', search: 'smart+water+monitor+leak+detector+wifi' }
+      { cat: 'tech', icon: '💧', name: 'Smart Water Monitor', desc: 'WiFi water flow sensor. Detects leaks and tracks usage in real-time.', impact: 'Saves ~10% on water bills', search: 'smart+water+monitor+leak+detector+wifi' },
+
+      // EV & Charging
+      { cat: 'ev', icon: '🔌', name: 'Level 2 Home EV Charger', desc: '240V, 40A home charging station. 25-30 miles of range per hour. WiFi-enabled with app control.', impact: 'Full charge overnight, saves vs public charging', search: 'level+2+ev+charger+home+240v+40+amp+wifi' },
+      { cat: 'ev', icon: '⚡', name: 'Portable EV Charger', desc: 'Level 1/2 portable EVSE. Plug into any 120V or 240V outlet. Perfect for travel and backup.', impact: 'Charge anywhere, no installation needed', search: 'portable+ev+charger+level+1+2+nema+14-50' },
+      { cat: 'ev', icon: '🔋', name: 'Tesla to J1772 Adapter', desc: 'Charge any EV at Tesla destination chargers. Universal J1772 adapter.', impact: 'Access Tesla charger network', search: 'tesla+to+j1772+adapter+ev+charger' },
+      { cat: 'ev', icon: '🚗', name: 'EV Charging Cable Organizer', desc: 'Wall-mounted cable management for your EV charger. Keeps garage tidy and cable protected.', impact: 'Extends cable life, safer garage', search: 'ev+charging+cable+organizer+wall+mount+holder' },
+      { cat: 'ev', icon: '🅿️', name: 'NEMA 14-50 Outlet', desc: '240V outlet for Level 2 EV charging. Professional-grade, weather-rated for garage installation.', impact: 'Required for Level 2 home charging', search: 'nema+14-50+outlet+240v+ev+charging+receptacle' },
+      { cat: 'ev', icon: '📊', name: 'EV Charging Energy Monitor', desc: 'Track exactly how much electricity your EV uses. Monitor cost per charge and monthly totals.', impact: 'Track EV charging costs precisely', search: 'ev+charging+energy+monitor+electricity+meter+kwh' },
+
+      // Solar & Home Energy
+      { cat: 'solar', icon: '☀️', name: 'Solar Panel Kit (400W)', desc: 'Starter solar panel kit with mounting hardware. Great for sheds, RVs, or supplemental home power.', impact: 'Generate ~50 kWh/month free', search: 'solar+panel+kit+400w+monocrystalline+mounting' },
+      { cat: 'solar', icon: '🔋', name: 'Portable Power Station', desc: 'Solar-compatible battery station. 1000Wh capacity. Powers appliances during outages.', impact: 'Clean backup power, pairs with solar', search: 'portable+power+station+1000wh+solar+generator' },
+      { cat: 'solar', icon: '💡', name: 'Solar Outdoor Lights', desc: 'Solar-powered pathway and garden lights. No wiring, no electricity cost. Auto on/off.', impact: '$0 electricity for outdoor lighting', search: 'solar+outdoor+lights+pathway+garden+led' },
+      { cat: 'solar', icon: '🌡️', name: 'Smart Thermostat (Energy Star)', desc: 'WiFi thermostat that learns your schedule. Saves 10-15% on heating/cooling. Works with all HVAC.', impact: 'Saves ~$140/year on energy', search: 'smart+thermostat+energy+star+wifi+programmable' },
+      { cat: 'solar', icon: '🏠', name: 'Attic Insulation Kit', desc: 'DIY blown-in insulation kit. R-38 coverage. Reduces heating/cooling loss through your attic.', impact: 'Saves 15-20% on heating/cooling', search: 'attic+insulation+kit+blown+in+diy+r38' },
+      { cat: 'solar', icon: '🪟', name: 'Window Insulation Film', desc: 'Heat-shrink window insulation kit. Reduces drafts and heat loss in winter. Easy DIY install.', impact: 'Saves 5-10% on heating costs', search: 'window+insulation+film+kit+heat+shrink+energy' }
     ];
   }
 
@@ -57,7 +73,7 @@ class GreenShop {
   }
 
   getCategories() {
-    return ['all', 'kitchen', 'bathroom', 'energy', 'outdoor', 'cleaning', 'tech'];
+    return ['all', 'ev', 'solar', 'kitchen', 'bathroom', 'energy', 'outdoor', 'cleaning', 'tech'];
   }
 }
 

@@ -63,6 +63,18 @@
     slrTrees: $('slrTrees'),
     solarChartBars: $('solarChartBars'),
 
+    // Incentives
+    tabIncentives: $('tabIncentives'),
+    incentiveState: $('incentiveState'),
+    incentiveCategories: $('incentiveCategories'),
+    incentiveTotalBanner: $('incentiveTotalBanner'),
+    incentiveTotalValue: $('incentiveTotalValue'),
+    federalIncentivesList: $('federalIncentivesList'),
+    stateIncentivesSection: $('stateIncentivesSection'),
+    stateSectionTitle: $('stateSectionTitle'),
+    stateIncentivesList: $('stateIncentivesList'),
+    noStateData: $('noStateData'),
+
     // EV Calculator
     evForm: $('evForm'),
     evResult: $('evResult'),
@@ -113,6 +125,7 @@
     setupCarbonCalc();
     setupSolarCalc();
     setupEVCalc();
+    setupIncentives();
     setupChallenges();
     setupShop();
     setupLearn();
@@ -411,6 +424,118 @@
       localStorage.setItem('gs_last_ev', JSON.stringify(r));
     } catch (e) { /* ignore */ }
   }
+
+  // ============================================
+  // INCENTIVES FINDER
+  // ============================================
+  function setupIncentives() {
+    // Populate state dropdown
+    const states = window.incentivesFinder.getStateList();
+    els.incentiveState.innerHTML = '<option value="">-- Select Your State --</option>' +
+      states.map(s => `<option value="${s.code}">${s.name}</option>`).join('');
+
+    // Load saved state
+    const savedState = localStorage.getItem('gs_state');
+    if (savedState) {
+      els.incentiveState.value = savedState;
+    }
+
+    // Render federal incentives on load
+    renderIncentives('all');
+
+    // State change
+    els.incentiveState.addEventListener('change', () => {
+      const code = els.incentiveState.value;
+      if (code) localStorage.setItem('gs_state', code);
+      renderIncentives(getCurrentIncentiveCat());
+    });
+
+    // Category filter
+    els.incentiveCategories.addEventListener('click', (e) => {
+      const btn = e.target.closest('.shop-cat-btn');
+      if (!btn) return;
+      const cat = btn.dataset.cat;
+      els.incentiveCategories.querySelectorAll('.shop-cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderIncentives(cat);
+    });
+  }
+
+  function getCurrentIncentiveCat() {
+    const active = els.incentiveCategories.querySelector('.shop-cat-btn.active');
+    return active ? active.dataset.cat : 'all';
+  }
+
+  function renderIncentives(category) {
+    const stateCode = els.incentiveState.value;
+
+    // Federal
+    const federalItems = window.incentivesFinder.getFederal(category);
+    els.federalIncentivesList.innerHTML = federalItems.map(i => renderIncentiveCard(i)).join('');
+
+    // State
+    if (stateCode && window.incentivesFinder.hasStateData(stateCode)) {
+      const stateData = window.incentivesFinder.getState(stateCode);
+      let stateItems = stateData.incentives;
+      if (category !== 'all') {
+        stateItems = stateItems.filter(i => i.category === category);
+      }
+
+      els.stateSectionTitle.textContent = '🏛️ ' + stateData.name + ' Incentives';
+      els.stateIncentivesList.innerHTML = stateItems.length > 0
+        ? stateItems.map(i => renderIncentiveCard(i)).join('')
+        : '<div class="info-text" style="text-align:center; padding:12px;">No ' + category + ' incentives found for this state.</div>';
+      els.stateIncentivesSection.style.display = 'block';
+      els.noStateData.style.display = 'none';
+
+      // Total banner
+      const total = window.incentivesFinder.getTotalPotentialSavings(stateCode);
+      els.incentiveTotalValue.textContent = '$' + total.toLocaleString() + '+';
+      els.incentiveTotalBanner.style.display = 'block';
+    } else if (stateCode) {
+      els.stateIncentivesSection.style.display = 'none';
+      els.noStateData.style.display = 'block';
+      els.incentiveTotalBanner.style.display = 'none';
+    } else {
+      els.stateIncentivesSection.style.display = 'none';
+      els.noStateData.style.display = 'none';
+      els.incentiveTotalBanner.style.display = 'none';
+    }
+  }
+
+  function renderIncentiveCard(item) {
+    return `
+      <div class="incentive-card">
+        <div class="incentive-card-cat">${item.icon || '📋'} ${item.category}</div>
+        <div class="incentive-card-top">
+          <div class="incentive-card-name">${item.name}</div>
+          <div class="incentive-card-amount">${item.amount}</div>
+        </div>
+        <div class="incentive-card-desc">${item.desc}</div>
+        ${item.url ? `<a class="incentive-card-link" href="${item.url}" target="_blank" rel="noopener">Learn more & apply →</a>` : ''}
+      </div>
+    `;
+  }
+
+  // ============================================
+  // TAB SWITCHING HELPERS (for Smart CTAs)
+  // ============================================
+  window._switchToTab = function(tabId, shopCat) {
+    switchTab(tabId);
+    // Update nav buttons
+    els.bottomNav.querySelectorAll('.nav-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.tab === tabId);
+    });
+    // Scroll to top
+    window.scrollTo(0, 0);
+    // If switching to shop with a category
+    if (shopCat && tabId === 'tabShop') {
+      els.shopCategories.querySelectorAll('.shop-cat-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.cat === shopCat);
+      });
+      renderShop(shopCat);
+    }
+  };
 
   // ============================================
   // GREEN CHALLENGES

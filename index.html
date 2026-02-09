@@ -8,9 +8,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="description" content="AI-powered sustainable living coach. Calculate your carbon footprint, track green challenges, discover solar savings, and shop eco-friendly products.">
   <title>GreenSage — Sustainable Living Coach</title>
-  <link rel="manifest" href="manifest.json?v=2">
+  <link rel="manifest" href="manifest.json?v=3">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
-  <link rel="stylesheet" href="css/styles.css?v=2">
+  <link rel="stylesheet" href="css/styles.css?v=3">
 </head>
 <body>
 
@@ -40,6 +40,11 @@
       <div class="landing-feature-icon">🏆</div>
       <div class="landing-feature-title">Green Challenges</div>
       <div class="landing-feature-desc">Daily eco challenges with streak tracking & impact scores</div>
+    </div>
+    <div class="landing-feature">
+      <div class="landing-feature-icon">💰</div>
+      <div class="landing-feature-title">Grants & Rebates</div>
+      <div class="landing-feature-desc">Federal & state incentives for EVs, solar, and home upgrades</div>
     </div>
     <div class="landing-feature">
       <div class="landing-feature-icon">🛒</div>
@@ -201,6 +206,35 @@
 
         <div class="eco-tips" id="ecoTips"></div>
 
+        <!-- Smart CTA: Carbon -->
+        <div class="smart-cta" id="carbonSmartCta">
+          <div class="smart-cta-title">🎯 Reduce Your Footprint</div>
+          <div class="smart-cta-item" onclick="window._switchToTab('tabEV')">
+            <span class="smart-cta-icon">🚗</span>
+            <div>
+              <div class="smart-cta-label">Switch to Electric Vehicle</div>
+              <div class="smart-cta-desc">Calculate how much you'd save switching to an EV</div>
+            </div>
+            <span class="smart-cta-arrow">→</span>
+          </div>
+          <div class="smart-cta-item" onclick="window._switchToTab('tabSolar')">
+            <span class="smart-cta-icon">☀️</span>
+            <div>
+              <div class="smart-cta-label">Go Solar</div>
+              <div class="smart-cta-desc">Estimate your solar panel savings and CO₂ reduction</div>
+            </div>
+            <span class="smart-cta-arrow">→</span>
+          </div>
+          <div class="smart-cta-item" onclick="window._switchToTab('tabIncentives')">
+            <span class="smart-cta-icon">💰</span>
+            <div>
+              <div class="smart-cta-label">Find Green Incentives</div>
+              <div class="smart-cta-desc">Federal & state rebates for EVs, solar, and home upgrades</div>
+            </div>
+            <span class="smart-cta-arrow">→</span>
+          </div>
+        </div>
+
         <button class="btn btn-outline" id="btnRecalc" style="margin-top:16px;">Recalculate</button>
       </div>
     </div>
@@ -299,6 +333,27 @@
         <div class="solar-chart" id="solarChart">
           <div class="solar-chart-title">Monthly Production Estimate (kWh)</div>
           <div class="solar-chart-bars" id="solarChartBars"></div>
+        </div>
+
+        <!-- Smart CTA: Solar -->
+        <div class="smart-cta" id="solarSmartCta">
+          <div class="smart-cta-title">🎯 Next Steps to Go Solar</div>
+          <div class="smart-cta-item" onclick="window._switchToTab('tabIncentives')">
+            <span class="smart-cta-icon">💰</span>
+            <div>
+              <div class="smart-cta-label">Check Your State Incentives</div>
+              <div class="smart-cta-desc">Federal 30% tax credit + state rebates could save thousands more</div>
+            </div>
+            <span class="smart-cta-arrow">→</span>
+          </div>
+          <div class="smart-cta-item" onclick="window._switchToTab('tabShop','solar')">
+            <span class="smart-cta-icon">🛒</span>
+            <div>
+              <div class="smart-cta-label">Browse Solar Products</div>
+              <div class="smart-cta-desc">Starter kits, power stations, energy monitors & more</div>
+            </div>
+            <span class="smart-cta-arrow">→</span>
+          </div>
         </div>
 
         <button class="btn btn-outline" id="btnRecalcSolar" style="margin-top:16px;">Recalculate</button>
@@ -477,6 +532,35 @@
           <div class="solar-chart-bars" id="evChartBars"></div>
         </div>
 
+        <!-- Smart CTA: EV -->
+        <div class="smart-cta" id="evSmartCta">
+          <div class="smart-cta-title">🎯 Ready to Switch? Next Steps</div>
+          <div class="smart-cta-item" onclick="window._switchToTab('tabIncentives')">
+            <span class="smart-cta-icon">💰</span>
+            <div>
+              <div class="smart-cta-label">Check EV Incentives & Credits</div>
+              <div class="smart-cta-desc">Up to $7,500 federal + state rebates in your area</div>
+            </div>
+            <span class="smart-cta-arrow">→</span>
+          </div>
+          <div class="smart-cta-item" onclick="window._switchToTab('tabShop','ev')">
+            <span class="smart-cta-icon">🔌</span>
+            <div>
+              <div class="smart-cta-label">Get a Home EV Charger</div>
+              <div class="smart-cta-desc">Level 2 chargers from $299 — charge overnight at home</div>
+            </div>
+            <span class="smart-cta-arrow">→</span>
+          </div>
+          <div class="smart-cta-item" onclick="window._switchToTab('tabSolar')">
+            <span class="smart-cta-icon">☀️</span>
+            <div>
+              <div class="smart-cta-label">Power Your EV with Solar</div>
+              <div class="smart-cta-desc">Calculate solar savings — charge your EV for free</div>
+            </div>
+            <span class="smart-cta-arrow">→</span>
+          </div>
+        </div>
+
         <button class="btn btn-outline" id="btnRecalcEV" style="margin-top:16px;">Recalculate</button>
       </div>
     </div>
@@ -518,6 +602,8 @@
 
     <div class="shop-categories" id="shopCategories">
       <button class="shop-cat-btn active" data-cat="all">All</button>
+      <button class="shop-cat-btn" data-cat="ev">EV Charging</button>
+      <button class="shop-cat-btn" data-cat="solar">Solar & Home</button>
       <button class="shop-cat-btn" data-cat="kitchen">Kitchen</button>
       <button class="shop-cat-btn" data-cat="bathroom">Bath</button>
       <button class="shop-cat-btn" data-cat="energy">Energy</button>
@@ -527,6 +613,65 @@
     </div>
 
     <div class="shop-grid" id="shopGrid"></div>
+  </div>
+
+  <!-- ====== TAB: Incentives (Government Grants & Rebates) ====== -->
+  <div class="tab-content" id="tabIncentives">
+    <div class="card" style="padding:12px 16px;">
+      <div class="card-title" style="margin-bottom:4px;">💰 Green Incentives & Rebates</div>
+      <div class="card-subtitle">Federal & state programs that save you money</div>
+    </div>
+
+    <!-- State Selector -->
+    <div class="card">
+      <div class="form-group" style="margin-bottom:0;">
+        <label class="form-label">📍 Select your state for local incentives</label>
+        <select class="form-select" id="incentiveState">
+          <option value="">-- Select State --</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="shop-categories" id="incentiveCategories" style="margin-top:12px;">
+      <button class="shop-cat-btn active" data-cat="all">All</button>
+      <button class="shop-cat-btn" data-cat="ev">EV</button>
+      <button class="shop-cat-btn" data-cat="solar">Solar</button>
+      <button class="shop-cat-btn" data-cat="home">Home</button>
+      <button class="shop-cat-btn" data-cat="appliance">Appliance</button>
+    </div>
+
+    <!-- Total Potential Banner -->
+    <div class="incentive-total-banner" id="incentiveTotalBanner" style="display:none;">
+      <div class="incentive-total-label">Potential Total Savings</div>
+      <div class="incentive-total-value" id="incentiveTotalValue">--</div>
+      <div class="incentive-total-sub">Federal + State combined</div>
+    </div>
+
+    <!-- Federal Incentives -->
+    <div class="incentive-section-title" id="fedSectionTitle">🇺🇸 Federal Incentives</div>
+    <div id="federalIncentivesList"></div>
+
+    <!-- State Incentives -->
+    <div id="stateIncentivesSection" style="display:none;">
+      <div class="incentive-section-title" id="stateSectionTitle">🏛️ State Incentives</div>
+      <div id="stateIncentivesList"></div>
+    </div>
+
+    <!-- No state data message -->
+    <div id="noStateData" style="display:none;">
+      <div class="card" style="text-align:center; padding:24px;">
+        <div style="font-size:2rem; margin-bottom:8px;">🔍</div>
+        <div class="info-text">State-specific incentive data not yet available for this state. Check <a href="https://www.dsireusa.org/" target="_blank" rel="noopener" style="color:var(--primary);">DSIRE Database</a> for your state's programs.</div>
+        <div class="info-text" style="margin-top:8px;">Federal incentives above still apply to all states.</div>
+      </div>
+    </div>
+
+    <!-- DSIRE link -->
+    <div class="card" style="text-align:center; margin-top:16px;">
+      <div class="info-text">Data sourced from IRS, DOE, and state agencies. For the most complete database, visit:</div>
+      <a href="https://www.dsireusa.org/" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="margin-top:8px; display:inline-flex;">DSIRE — Database of State Incentives</a>
+    </div>
   </div>
 
   <!-- ====== TAB: Learn (MasterTeach) ====== -->
@@ -561,6 +706,8 @@
         <div class="info-text">Complete 3 daily eco-challenges to build your streak. Earn points and track your cumulative environmental impact. New challenges every day.</div>
         <div class="info-subtitle">🛒 Eco Shop</div>
         <div class="info-text">Browse curated sustainable products across categories. Each product shows its environmental impact. Links go to Amazon for easy purchasing.</div>
+        <div class="info-subtitle">💰 Incentives</div>
+        <div class="info-text">Browse federal and state government incentives, tax credits, and rebates for EVs, solar panels, home energy upgrades, and appliances. Select your state to see local programs.</div>
         <div class="info-subtitle">📚 Learn</div>
         <div class="info-text">Educational articles about green energy, sustainable living, climate science, and practical tips for reducing your environmental impact.</div>
       </div>
@@ -631,7 +778,7 @@
 <nav class="bottom-nav" id="bottomNav">
   <button class="nav-btn active" data-tab="tabCarbon">
     <span>🌍</span>
-    <span class="nav-btn-label">EcoScore</span>
+    <span class="nav-btn-label">Carbon</span>
   </button>
   <button class="nav-btn" data-tab="tabSolar">
     <span>☀️</span>
@@ -641,9 +788,13 @@
     <span>🚗</span>
     <span class="nav-btn-label">EV</span>
   </button>
+  <button class="nav-btn" data-tab="tabIncentives">
+    <span>💰</span>
+    <span class="nav-btn-label">Grants</span>
+  </button>
   <button class="nav-btn" data-tab="tabChallenge">
     <span>🏆</span>
-    <span class="nav-btn-label">Challenges</span>
+    <span class="nav-btn-label">Goals</span>
   </button>
   <button class="nav-btn" data-tab="tabShop">
     <span>🛒</span>
@@ -679,12 +830,13 @@ if (sessionStorage.getItem('gs_entered')) {
   document.getElementById('appContainer').classList.add('active');
 }
 </script>
-<script src="js/carbon-calc.js?v=2"></script>
-<script src="js/solar-calc.js?v=2"></script>
-<script src="js/ev-calc.js?v=2"></script>
-<script src="js/challenges.js?v=2"></script>
-<script src="js/green-shop.js?v=2"></script>
-<script src="js/learn.js?v=2"></script>
-<script src="js/app.js?v=2"></script>
+<script src="js/carbon-calc.js?v=3"></script>
+<script src="js/solar-calc.js?v=3"></script>
+<script src="js/ev-calc.js?v=3"></script>
+<script src="js/incentives.js?v=3"></script>
+<script src="js/challenges.js?v=3"></script>
+<script src="js/green-shop.js?v=3"></script>
+<script src="js/learn.js?v=3"></script>
+<script src="js/app.js?v=3"></script>
 </body>
 </html>
