@@ -1,19 +1,51 @@
 /* ============================================
    GreenSage — Government Incentives Finder
    Federal + State green energy incentives
+   Updated Feb 2026 — reflects OBBBA changes
    Sources: IRS, DOE, DSIRE, state agencies
    ============================================ */
 
 class IncentivesFinder {
   constructor() {
-    // Federal incentives (Inflation Reduction Act 2022, extended through 2032)
+    // Federal incentives — updated for OBBBA (One Big Beautiful Bill Act, July 2025)
     this.federal = [
+      {
+        id: 'fed-ev-charger',
+        name: 'EV Charger Tax Credit (30C)',
+        amount: '30% up to $1,000',
+        category: 'ev',
+        status: 'active',
+        desc: 'Tax credit for home EV charging equipment. Covers 30% of cost and installation, up to $1,000 residential. Must be in eligible census tract. Active through June 30, 2026.',
+        url: 'https://www.irs.gov/credits-deductions/alternative-fuel-vehicle-refueling-property-credit-for-individuals',
+        icon: '🔌'
+      },
+      {
+        id: 'fed-hear',
+        name: 'Home Electrification & Appliance Rebates (HEAR)',
+        amount: 'Up to $14,000',
+        category: 'appliance',
+        status: 'active',
+        desc: 'Point-of-sale rebates: heat pumps ($8,000), electrical panels ($4,000), insulation ($1,600), electric stoves ($840), dryers ($840). Income-qualified (under 150% AMI). Varies by state.',
+        url: 'https://www.energystar.gov/partner-resources/state-and-tribal-rebate-programs/hear-program',
+        icon: '⚡'
+      },
+      {
+        id: 'fed-homes',
+        name: 'HOMES Efficiency Rebates',
+        amount: 'Up to $8,000',
+        category: 'home',
+        status: 'active',
+        desc: 'Performance-based whole-house rebates for 20-35%+ energy savings. Up to $4,000 moderate-income, $8,000 low-income. Administered by states.',
+        url: 'https://www.energy.gov/scep/home-efficiency-rebates',
+        icon: '🏡'
+      },
       {
         id: 'fed-ev-new',
         name: 'Clean Vehicle Tax Credit (New EV)',
         amount: 'Up to $7,500',
         category: 'ev',
-        desc: 'Tax credit for new qualifying electric vehicles. Must meet final assembly, battery component, and critical mineral requirements. Income limits: $150k single / $300k joint.',
+        status: 'limited',
+        desc: 'Expired Sept 30, 2025 for most manufacturers. Limited 2026 extension ONLY for manufacturers with <200,000 US EV sales (Rivian, Lucid, Honda). Check eligibility carefully.',
         url: 'https://fueleconomy.gov/feg/tax2023.shtml',
         icon: '🚗'
       },
@@ -22,26 +54,19 @@ class IncentivesFinder {
         name: 'Used Clean Vehicle Credit',
         amount: 'Up to $4,000',
         category: 'ev',
-        desc: 'Tax credit for used EVs purchased from a dealer. Vehicle must be at least 2 years old and under $25,000. Income limits: $75k single / $150k joint.',
+        status: 'expired',
+        desc: 'Was 30% of sale price up to $4,000 for used EVs under $25,000 from dealers. Expired Sept 30, 2025 under OBBBA.',
         url: 'https://www.irs.gov/credits-deductions/used-clean-vehicle-credit',
         icon: '🚙'
-      },
-      {
-        id: 'fed-ev-charger',
-        name: 'EV Charger Tax Credit (30C)',
-        amount: '30% up to $1,000',
-        category: 'ev',
-        desc: 'Tax credit for home EV charging equipment. Covers 30% of cost and installation, up to $1,000 for residential. Must be in eligible census tract.',
-        url: 'https://afdc.energy.gov/laws/alternative-fuel-infrastructure-tax-credit',
-        icon: '🔌'
       },
       {
         id: 'fed-solar-itc',
         name: 'Residential Solar Tax Credit (ITC)',
         amount: '30% of cost',
         category: 'solar',
-        desc: 'Federal tax credit covers 30% of solar panel system cost including installation. No cap. Applies through 2032, then drops to 26% in 2033.',
-        url: 'https://www.energy.gov/eere/solar/homeowners-guide-federal-tax-credit-solar-photovoltaics',
+        status: 'expired',
+        desc: 'Was 30% of solar system cost with no cap. Expired Dec 31, 2025 for customer-owned systems under OBBBA. Third-party owned (leases/PPAs) may still qualify through 2027.',
+        url: 'https://www.irs.gov/credits-deductions/residential-clean-energy-credit',
         icon: '☀️'
       },
       {
@@ -49,199 +74,168 @@ class IncentivesFinder {
         name: 'Home Battery Storage Credit',
         amount: '30% of cost',
         category: 'solar',
-        desc: 'Tax credit for home battery storage systems (3+ kWh capacity). Standalone batteries now qualify — no solar required.',
+        status: 'expired',
+        desc: 'Was 30% for battery storage systems (3+ kWh). Expired Dec 31, 2025 under OBBBA.',
         url: 'https://www.energy.gov/eere/solar/homeowners-guide-federal-tax-credit-solar-photovoltaics',
         icon: '🔋'
       },
       {
         id: 'fed-heat-pump',
-        name: 'Heat Pump Tax Credit',
+        name: 'Heat Pump Tax Credit (25C)',
         amount: 'Up to $2,000/year',
         category: 'home',
-        desc: 'Tax credit for qualifying heat pumps (air source, geothermal, mini-split). Covers 30% of cost up to $2,000/year. Must meet Energy Star efficiency.',
+        status: 'expired',
+        desc: 'Was 30% up to $2,000/year for qualifying heat pumps. Part of Energy Efficient Home Improvement Credit. Expired Dec 31, 2025 under OBBBA.',
         url: 'https://www.energystar.gov/about/federal-tax-credits/air-source-heat-pumps',
         icon: '🌡️'
       },
       {
         id: 'fed-insulation',
-        name: 'Home Insulation & Doors Credit',
+        name: 'Home Insulation & Windows Credit (25C)',
         amount: 'Up to $1,200/year',
         category: 'home',
-        desc: 'Tax credit for insulation, exterior doors ($250/door), and windows ($600 max). Part of the Energy Efficient Home Improvement Credit.',
+        status: 'expired',
+        desc: 'Was 30% for insulation, doors ($250/door), windows ($600 max). Expired Dec 31, 2025 under OBBBA.',
         url: 'https://www.energystar.gov/about/federal-tax-credits/insulation',
         icon: '🏠'
-      },
-      {
-        id: 'fed-water-heater',
-        name: 'Heat Pump Water Heater Credit',
-        amount: 'Up to $2,000/year',
-        category: 'home',
-        desc: 'Tax credit for heat pump water heaters meeting Energy Star requirements. 3-4x more efficient than standard electric water heaters.',
-        url: 'https://www.energystar.gov/about/federal-tax-credits/water-heaters-heat-pump',
-        icon: '🚿'
-      },
-      {
-        id: 'fed-energy-audit',
-        name: 'Home Energy Audit Credit',
-        amount: 'Up to $150',
-        category: 'home',
-        desc: 'Tax credit for a professional home energy audit to identify efficiency improvements. Must meet DOE requirements.',
-        url: 'https://www.energystar.gov/about/federal-tax-credits/home-energy-audits',
-        icon: '📋'
-      },
-      {
-        id: 'fed-appliance-rebate',
-        name: 'HOMES Rebate Program',
-        amount: 'Up to $8,000',
-        category: 'appliance',
-        desc: 'Income-based rebates for whole-home energy efficiency upgrades. Up to $8,000 for low-income households. Funded by IRA, distributed by states.',
-        url: 'https://www.energy.gov/scep/home-energy-rebates-programs',
-        icon: '🏡'
-      },
-      {
-        id: 'fed-electrification',
-        name: 'High-Efficiency Electric Home Rebate',
-        amount: 'Up to $14,000',
-        category: 'appliance',
-        desc: 'Point-of-sale rebates for heat pumps ($8,000), heat pump water heaters ($1,750), electric stoves ($840), insulation ($1,600), and more. Income-qualified.',
-        url: 'https://www.energy.gov/scep/home-energy-rebates-programs',
-        icon: '⚡'
       }
     ];
 
-    // State incentives database
+    // State incentives — these are UNAFFECTED by OBBBA
     this.states = {
       'CA': {
         name: 'California',
         incentives: [
-          { name: 'CVRP — Clean Vehicle Rebate', amount: 'Up to $7,500', category: 'ev', desc: 'Rebate for new EVs. $2,000-$7,500 based on income. Stackable with federal credit.', url: 'https://cleanvehiclerebate.org/' },
-          { name: 'Self-Generation Incentive (SGIP)', amount: 'Up to $1,000/kWh', category: 'solar', desc: 'Rebate for home battery storage. Higher incentives for low-income and fire-risk areas.', url: 'https://www.selfgenc.com/' },
-          { name: 'Net Energy Metering (NEM 3.0)', amount: 'Bill credits', category: 'solar', desc: 'Export excess solar to grid for bill credits. Rates vary by time of export.', url: 'https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/demand-side-management/net-energy-metering' },
-          { name: 'TECH Clean California', amount: 'Up to $4,250', category: 'home', desc: 'Rebates for heat pump HVAC and water heaters. Statewide program for all-electric homes.', url: 'https://techcleanca.com/' },
-          { name: 'PG&E EV Rate', amount: 'Discounted rates', category: 'ev', desc: 'Special electricity rate for EV charging. Off-peak rates as low as $0.24/kWh for overnight charging.', url: 'https://www.pge.com/en/account/rate-plans/find-your-best-rate-plan.html' }
+          { name: 'Clean Cars 4 All', amount: 'Up to $12,000 + $2,000 charger', category: 'ev', desc: 'Income-qualified residents get up to $12,000 toward new/used EV plus $2,000 for charging. Replaces retired CVRP.', url: 'https://ww2.arb.ca.gov/our-work/programs/clean-cars-4-all' },
+          { name: 'Self-Generation Incentive (SGIP)', amount: '$150-$1,000/kWh storage', category: 'solar', desc: 'Battery storage rebate: $150/kWh general, $850/kWh equity, $1,000/kWh equity resilience. PG&E, SCE, SDG&E customers.', url: 'https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/demand-side-management/self-generation-incentive-program' },
+          { name: 'Net Billing (NEM 3.0)', amount: 'Wholesale rate credits', category: 'solar', desc: 'Export credits at ~25% of retail rate. Battery storage strongly recommended to maximize savings.', url: 'https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/demand-side-management/net-energy-metering' },
+          { name: 'HEAR Program (California)', amount: 'Up to $14,000', category: 'appliance', desc: 'IRA-funded electrification rebates for low-to-moderate income households. Heat pumps, panels, insulation. Program active.', url: 'https://www.energy.ca.gov/programs-and-topics/programs/inflation-reduction-act-residential-energy-rebate-programs' },
+          { name: 'Solar & Storage Equity Program', amount: '$280M fund', category: 'solar', desc: 'Fully subsidized solar + storage for low-income customers in disadvantaged communities.', url: 'https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/demand-side-management/net-energy-metering/solar-and-storage-equity-program' }
         ]
       },
       'TX': {
         name: 'Texas',
         incentives: [
-          { name: 'Light-Duty Motor Vehicle Purchase Incentive', amount: 'Up to $2,500', category: 'ev', desc: 'Rebate for new EVs purchased or leased by Texas residents. First-come, first-served funding.', url: 'https://www.tceq.texas.gov/airquality/terp/ld.html' },
-          { name: 'Net Metering (Utility-Specific)', amount: 'Varies by utility', category: 'solar', desc: 'Some TX utilities offer net metering or buyback programs. Check with your provider (Oncor, CenterPoint, etc.).', url: 'https://www.texaselectricityratings.com/blog/net-metering-in-texas/' },
-          { name: 'Property Tax Exemption for Solar', amount: '100% exemption', category: 'solar', desc: 'Solar panels are exempt from property tax increases in Texas. Your home value increases but taxes don\'t.', url: 'https://comptroller.texas.gov/taxes/property-tax/' },
-          { name: 'Austin Energy Solar Rebate', amount: '$2,500', category: 'solar', desc: 'Austin Energy customers get $2,500 rebate for solar installation. Additional battery incentives available.', url: 'https://austinenergy.com/green-power/solar-solutions' }
+          { name: 'Light-Duty Vehicle Purchase Incentive', amount: 'Up to $2,500', category: 'ev', desc: 'Grant for new EV purchase/lease. Available through March 2026 or until funds exhausted.', url: 'https://www.tceq.texas.gov/airquality/terp/ldplip' },
+          { name: 'Solar Property Tax Exemption', amount: '100% exempt', category: 'solar', desc: 'Solar systems exempt from property tax increases. Home value increases but taxes don\'t.', url: 'https://comptroller.texas.gov/taxes/property-tax/exemptions/' },
+          { name: 'Oncor Energy Efficiency Rebates', amount: 'Varies', category: 'home', desc: 'Rebates for HVAC, insulation, smart thermostats for Oncor customers.', url: 'https://www.oncor.com/en/content/take-advantage-of-energy-efficiency-rebates' },
+          { name: 'Utility Buy-Back Programs', amount: 'Varies by utility', category: 'solar', desc: 'No statewide net metering. Austin Energy and CPS Energy offer buy-back at varying rates.', url: 'https://www.texaselectricityratings.com/blog/solar-buyback-plans-in-texas/' }
         ]
       },
       'FL': {
         name: 'Florida',
         incentives: [
-          { name: 'Sales Tax Exemption for Solar', amount: '6% savings', category: 'solar', desc: 'Solar energy systems are exempt from Florida\'s 6% sales tax. Saves $1,000-$2,000+ on typical install.', url: 'https://www.flsenate.gov/Laws/Statutes/2023/212.08' },
-          { name: 'Property Tax Exemption for Solar', amount: '100% exemption', category: 'solar', desc: 'Residential solar installations exempt from property tax increases. Added home value is tax-free.', url: 'https://floridarevenue.com/property/Pages/Taxpayers_Exemptions.aspx' },
-          { name: 'Net Metering', amount: 'Retail rate credits', category: 'solar', desc: 'Florida requires utilities to offer net metering at full retail rate for systems up to 2 MW.', url: 'https://www.flrules.org/gateway/ChapterHome.asp?Chapter=25-6' },
-          { name: 'FPL SolarTogether', amount: 'Bill credits', category: 'solar', desc: 'Community solar program — subscribe to solar without rooftop panels. Monthly bill credits.', url: 'https://www.fpl.com/clean-energy/solar/solar-together.html' }
+          { name: 'Solar Sales Tax Exemption', amount: '6% savings', category: 'solar', desc: 'Solar equipment exempt from 6% state sales tax. Saves $1,000-$2,000+ on typical install.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/fl/' },
+          { name: 'Solar Property Tax Exemption', amount: '100% exempt', category: 'solar', desc: 'Added home value from solar is completely tax-free in Florida.', url: 'https://floridarevenue.com/property/Pages/Taxpayers_Exemptions.aspx' },
+          { name: 'Net Metering (Declining)', amount: '60% retail rate (2026)', category: 'solar', desc: 'Credits for excess solar at 60% retail in 2026, dropping to 50% in 2027. Grandfathering may apply.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/fl/' },
+          { name: 'FPL SolarTogether', amount: 'Bill credits', category: 'solar', desc: 'Community solar — subscribe without rooftop panels. Monthly bill credits.', url: 'https://www.fpl.com/clean-energy/solar/solar-together.html' }
         ]
       },
       'NY': {
         name: 'New York',
         incentives: [
-          { name: 'Drive Clean Rebate', amount: 'Up to $2,000', category: 'ev', desc: 'Point-of-sale rebate for new EVs. $500-$2,000 depending on vehicle price. Applies automatically at dealer.', url: 'https://www.nyserda.ny.gov/All-Programs/Drive-Clean-Rebate-For-Electric-Cars' },
-          { name: 'NY-Sun Solar Incentive', amount: '$0.20-$0.40/W', category: 'solar', desc: 'Upfront incentive reducing solar install cost. Typical savings $2,000-$5,000 depending on region and system size.', url: 'https://www.nyserda.ny.gov/All-Programs/NY-Sun' },
-          { name: 'Solar Energy System Tax Credit', amount: '25% up to $5,000', category: 'solar', desc: 'State tax credit of 25% of solar system cost, max $5,000. Stacks with federal 30% ITC.', url: 'https://www.tax.ny.gov/pit/credits/solar-energy-system-equipment-credit.htm' },
-          { name: 'EmPower+ Program', amount: 'Free upgrades', category: 'home', desc: 'Free energy efficiency upgrades for income-eligible households. Includes insulation, air sealing, LED lighting.', url: 'https://www.nyserda.ny.gov/All-Programs/EmPower-New-York' },
-          { name: 'SREC Credits', amount: '~$15-25/MWh', category: 'solar', desc: 'Earn Solar Renewable Energy Credits for electricity generated. Sell on market for additional income.', url: 'https://www.nyserda.ny.gov/All-Programs/NY-Sun/Contractors/Value-of-Distributed-Energy-Resources' }
+          { name: 'Drive Clean Rebate', amount: 'Up to $2,000', category: 'ev', desc: '$2,000 rebate for new BEVs with 200+ mile range. Applied at point of sale. 60+ qualifying models.', url: 'https://www.nyserda.ny.gov/All-Programs/Drive-Clean-Rebate-For-Electric-Cars' },
+          { name: 'NY State Solar Tax Credit', amount: '25% up to $5,000', category: 'solar', desc: 'State income tax credit of 25% of solar cost, max $5,000. Stacks with any remaining federal credit.', url: 'https://www.tax.ny.gov/pit/credits/solar_energy_system_equipment_credit.htm' },
+          { name: 'NY-Sun Incentive (NYSERDA)', amount: '$0.20-$0.60/W', category: 'solar', desc: 'Upfront per-watt rebate on installation. Varies by region. LMI incentives continue.', url: 'https://www.nyserda.ny.gov/All-Programs/NY-Sun' },
+          { name: 'Net Metering (Full Retail)', amount: '1:1 retail credits', category: 'solar', desc: 'All major NY utilities offer full retail rate net metering for systems up to 25 kW.', url: 'https://www.nyserda.ny.gov/All-Programs/NY-Sun/On-site-Solar/Homes/Paying-for-Solar' },
+          { name: 'HEAR Program (New York)', amount: 'Up to $14,000', category: 'appliance', desc: 'IRA-funded electrification rebates for income-qualified NY residents. Through NYSERDA.', url: 'https://www.nyserda.ny.gov/All-Programs/Inflation-Reduction-Act/Inflation-Reduction-Act-homeowners' }
         ]
       },
       'PA': {
         name: 'Pennsylvania',
         incentives: [
-          { name: 'Alternative Fuel Vehicle Rebate', amount: 'Up to $2,000', category: 'ev', desc: 'Rebate for new battery EVs or PHEVs purchased by PA residents. Income limits may apply.', url: 'https://www.dep.pa.gov/Citizens/GrantsLoansRebates/Alternative-Fuels-Incentive-Grant/Pages/default.aspx' },
-          { name: 'SREC Market', amount: '~$20-40/MWh', category: 'solar', desc: 'Pennsylvania has an active SREC market. Solar owners earn credits worth $20-40 per MWh generated.', url: 'https://www.puc.pa.gov/filing-resources/issues-laws-regulations/act-129/' },
-          { name: 'Net Metering', amount: 'Retail rate credits', category: 'solar', desc: 'PA requires net metering at retail rate for systems up to 50 kW. Year-end credit settlement.', url: 'https://www.puc.pa.gov/filing-resources/issues-laws-regulations/net-metering/' },
-          { name: 'PECO Smart Ideas Rebates', amount: 'Varies', category: 'home', desc: 'Rebates on smart thermostats, insulation, heat pumps, and LED bulbs for PECO customers.', url: 'https://www.peco.com/smart-ideas' }
+          { name: 'Alternative Fuel Vehicle Rebate', amount: 'Up to $2,000', category: 'ev', desc: 'Rebate for new battery electric and plug-in hybrid vehicles. Administered by PA DEP.', url: 'https://www.dep.pa.gov/Citizens/GrantsLoansRebates/Alternative-Fuels-Incentive-Grant/pages/alternative-fuel-vehicles.aspx' },
+          { name: 'Solar Renewable Energy Credits', amount: '$25-$35/SREC', category: 'solar', desc: 'Earn 1 SREC per 1,000 kWh generated. Sell on open market. Prices fluctuate.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/pa/' },
+          { name: 'Net Metering (Full Retail)', amount: '1:1 retail credits', category: 'solar', desc: 'All PA investor-owned utilities provide full retail rate net metering.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/pa/' },
+          { name: 'Philadelphia Solar Rebate', amount: 'Up to $1,000', category: 'solar', desc: 'City rebate for Philadelphia residents. Limited to city residents only.', url: 'https://www.phila.gov/programs/solarize-philly/' }
         ]
       },
       'IL': {
         name: 'Illinois',
         incentives: [
-          { name: 'Illinois EV Rebate', amount: 'Up to $4,000', category: 'ev', desc: 'Rebate for new EVs. Illinois Climate & Equitable Jobs Act provides $4,000 for new EVs.', url: 'https://www2.illinois.gov/epa/topics/ceja/Pages/Electric-Vehicle-Rebates.aspx' },
-          { name: 'IL Solar Renewable Energy Credits', amount: '~$60-80/REC', category: 'solar', desc: 'Illinois has some of the highest SREC values in the US. 15-year contract through IL Shines program.', url: 'https://www.illinoisshines.com/' },
-          { name: 'ComEd Solar & EV Programs', amount: 'Varies', category: 'solar', desc: 'ComEd offers hourly pricing, EV charging rates, and community solar programs for Chicagoland.', url: 'https://www.comed.com/ways-to-save' },
-          { name: 'IL EV Charging Rebate', amount: '80% up to $3,200', category: 'ev', desc: 'Rebate covers 80% of EV charger purchase and installation cost, up to $3,200 residential.', url: 'https://www2.illinois.gov/epa/topics/ceja/Pages/Electric-Vehicle-Rebates.aspx' }
+          { name: 'Illinois Shines Solar SRECs', amount: '$75-$95/SREC (15-yr)', category: 'solar', desc: 'Lump-sum payment for 15 years of SRECs. Rates increasing 34-43% for 2026-27. One of the best in the US.', url: 'https://www.illinoisshines.com/' },
+          { name: 'Solar + Battery Rebate', amount: '$300/kW + $300/kWh', category: 'solar', desc: '$300 per kW solar + $300 per kWh storage for qualifying residential installations.', url: 'https://www.illinoisshines.com/' },
+          { name: 'Illinois EV Rebate (CEJA)', amount: 'Up to $4,000', category: 'ev', desc: '$4,000 for new EVs under Climate & Equitable Jobs Act. Income/price caps apply.', url: 'https://www.illinoisgreenalliance.org/resources/illinois-ev-rebate' },
+          { name: 'Net Metering (Full Retail)', amount: '1:1 retail credits', category: 'solar', desc: 'ComEd, Ameren, MidAmerican offer full retail net metering for systems up to 25 kW.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/il/' }
         ]
       },
       'OH': {
         name: 'Ohio',
         incentives: [
-          { name: 'AEP Ohio EV Rebate', amount: 'Up to $500', category: 'ev', desc: 'AEP customers can get $500 off Level 2 home EV charger purchase and installation.', url: 'https://www.aepohio.com/savings/electric-vehicles' },
-          { name: 'Property Tax Exemption for Solar', amount: '100% exemption', category: 'solar', desc: 'Residential solar qualifies for property tax exemption on added home value in Ohio.', url: 'https://tax.ohio.gov/help-center/faqs/property-tax' },
-          { name: 'Net Metering', amount: 'Retail rate credits', category: 'solar', desc: 'Ohio requires net metering for systems up to 25 kW at full retail rate.', url: 'https://puco.ohio.gov/utilities/electricity/resources/net-metering' },
-          { name: 'Home Weatherization Assistance', amount: 'Free upgrades', category: 'home', desc: 'Free weatherization for income-eligible Ohio residents. Insulation, sealing, HVAC improvements.', url: 'https://development.ohio.gov/community/community-resources/home-weatherization-assistance-program' }
+          { name: 'Net Metering (Full Retail)', amount: '1:1 retail credits', category: 'solar', desc: 'Ohio investor-owned utilities offer full retail rate net metering. Credits carry forward.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/oh/' },
+          { name: 'Utility EV Charger Rebates', amount: '$200-$1,000', category: 'ev', desc: '14 Ohio utilities offer Level 2 charger rebates. Varies by utility.', url: 'https://www.energysage.com/ev-charging/ohio-ev-incentives/' },
+          { name: 'Home Energy Rebates (IRA)', amount: 'Up to $14,000', category: 'home', desc: 'Ohio received ~$250M in IRA funding. Program launching late 2025/early 2026.', url: 'https://energizeohio.osu.edu/incentives' }
         ]
       },
       'GA': {
         name: 'Georgia',
         incentives: [
-          { name: 'Georgia Power EV Rate', amount: 'Discounted off-peak', category: 'ev', desc: 'Special TOU rate for EV owners. Off-peak charging at ~$0.01/kWh (super off-peak 11pm-7am).', url: 'https://www.georgiapower.com/residential/billing-and-rate-plans/pricing-and-rate-plans.html' },
-          { name: 'Net Metering (Georgia Power)', amount: 'Avoided cost credits', category: 'solar', desc: 'Georgia Power offers net metering at avoided cost rate. Not full retail, but still provides value.', url: 'https://www.georgiapower.com/residential/save-money-and-energy/products-programs/solar-energy.html' },
-          { name: 'Sales Tax Exemption for Solar', amount: '4% savings', category: 'solar', desc: 'Solar panels exempt from Georgia state sales tax (4%).', url: 'https://dor.georgia.gov/taxes/sales-use-tax' }
+          { name: 'Georgia Home Energy Rebates', amount: 'Up to $16,000', category: 'home', desc: 'Up to $16,000 depending on income and energy savings. Weatherization, HVAC, appliances.', url: 'https://energyrebates.georgia.gov/' },
+          { name: 'Georgia Power Rebates', amount: 'Up to $1,000', category: 'home', desc: 'Water heater ($1,000), insulation ($250), smart thermostat ($200) for GP customers.', url: 'https://www.georgiapower.com/residential/save-money-and-energy/rebates-and-discounts.html' },
+          { name: 'Georgia Power EV Charger', amount: 'Up to $150', category: 'ev', desc: '$150 toward Level 2 EV charger for Georgia Power residential customers.', url: 'https://www.georgiapower.com/residential/electric-vehicles.html' }
         ]
       },
       'NC': {
         name: 'North Carolina',
         incentives: [
-          { name: 'Duke Energy EV Rebate', amount: '$1,000-$1,500', category: 'ev', desc: 'Duke Energy customers get $1,000-$1,500 for installing a Level 2 home EV charger.', url: 'https://www.duke-energy.com/energy-education/electric-vehicles' },
-          { name: 'NC Solar Property Tax Exemption', amount: '80% exemption', category: 'solar', desc: '80% of the added value from solar is exempt from property taxes in North Carolina.', url: 'https://www.ncleg.gov/EnactedLegislation/Statutes/PDF/BySection/Chapter_105/GS_105-275.pdf' },
-          { name: 'Net Metering', amount: 'Retail rate credits', category: 'solar', desc: 'NC requires utilities to offer net metering at avoided cost rate for systems up to 1 MW.', url: 'https://www.ncuc.gov/ncrules/chapter08.html' }
+          { name: 'Duke Energy PowerPair', amount: 'Up to $9,000', category: 'solar', desc: 'Up to $9,000 for solar-plus-battery storage system. Depends on battery capacity.', url: 'https://www.duke-energy.com/home/products/power-pair' },
+          { name: 'Duke Energy EV Charger Credit', amount: 'Up to $1,133', category: 'ev', desc: 'Credit toward Level 2 home EV charger installation for Duke Carolinas customers.', url: 'https://www.duke-energy.com/home/products/ev-complete-home' },
+          { name: 'Net Metering (Full Retail)', amount: '1:1 retail credits', category: 'solar', desc: 'Duke and Dominion NC offer full retail rate net metering.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/nc/' },
+          { name: 'NC Home Energy Rebates', amount: 'Varies', category: 'home', desc: 'IRA-funded rebates launched Jan 2025. Insulation, heat pumps, air sealing.', url: 'https://nccleantech.ncsu.edu/2025/01/28/new-energy-efficiency-rebates-now-available-in-north-carolina/' }
         ]
       },
       'MI': {
         name: 'Michigan',
         incentives: [
-          { name: 'DTE EV Rate', amount: 'Discounted off-peak', category: 'ev', desc: 'DTE Energy offers special EV charging rates. Off-peak rates significantly lower for overnight charging.', url: 'https://www.dteenergy.com/us/en/residential/service-request/pev.html' },
-          { name: 'Consumers Energy PowerMIDrive', amount: 'Up to $500', category: 'ev', desc: 'Rebate on Level 2 EV charger installation for Consumers Energy customers.', url: 'https://www.consumersenergy.com/residential/programs-and-services/electric-vehicles' },
-          { name: 'MI Solar Outright Purchase Credit', amount: 'Varies', category: 'solar', desc: 'DTE and Consumers Energy offer net metering and distributed generation programs for solar.', url: 'https://www.michigan.gov/egle/about/organization/materials-management/energy/renewable-energy' }
+          { name: 'DTE Home EV Charger Rebate', amount: 'Up to $500', category: 'ev', desc: 'Rebate for Level 2 home EV charger for DTE residential customers.', url: 'https://www.dteenergy.com/residential/programs-services/electric-vehicles' },
+          { name: 'LBWL EV Charger Rebate', amount: 'Up to $1,000', category: 'ev', desc: 'Lansing Board of Water & Light customers get up to $1,000 for home charger.', url: 'https://www.lbwl.com/community/electric-vehicle-rebate' },
+          { name: 'LBWL Solar Rebate', amount: '$500/kW up to $2,000', category: 'solar', desc: 'Lansing BWL offers $500/kW installed, max $2,000 for LBWL residential customers.', url: 'https://www.lbwl.com/' },
+          { name: 'Michigan HEAR Program', amount: 'Up to $14,000', category: 'appliance', desc: 'IRA-funded electrification rebates for income-qualified MI residents. Program active.', url: 'https://www.michigan.gov/egle/about/featured/ira-home-energy-rebates' }
         ]
       },
       'NJ': {
         name: 'New Jersey',
         incentives: [
-          { name: 'NJ EV Sales Tax Exemption', amount: '~7% savings', category: 'ev', desc: 'Zero-emission vehicles exempt from NJ sales tax (6.625%). Saves $2,000-$5,000+ on purchase.', url: 'https://www.nj.gov/treasury/taxation/su_zev.shtml' },
-          { name: 'NJ Successor Solar Incentive (SuSI)', amount: '$85-$100/MWh', category: 'solar', desc: 'Fixed payments for 15 years per MWh of solar generated. One of the best solar incentives in the US.', url: 'https://www.njcleanenergy.com/renewable-energy/programs/susi-program' },
-          { name: 'NJ Solar Property Tax Exemption', amount: '100% exemption', category: 'solar', desc: 'Full property tax exemption for solar installations. Added home value is completely tax-free.', url: 'https://www.njcleanenergy.com/renewable-energy/programs/property-tax-exemption' },
-          { name: 'NJ Clean Energy HVAC Rebates', amount: 'Up to $5,000', category: 'home', desc: 'Rebates on high-efficiency HVAC, heat pumps, and water heaters for NJ residents.', url: 'https://www.njcleanenergy.com/residential/programs/programs' }
+          { name: 'Charge Up New Jersey', amount: 'Up to $4,000 + $250 charger', category: 'ev', desc: '$4,000 off qualifying new EV + $250 for Level 2 charger. Point-of-sale at dealers.', url: 'https://chargeup.njcleanenergy.com/' },
+          { name: 'SREC-II / SuSI Program', amount: '$85/MWh for 15 years', category: 'solar', desc: '$85 per MWh for 15 years. One of the most valuable solar incentives in the US. Review March 2026.', url: 'https://njcleanenergy.com/renewable-energy/programs/susi-program' },
+          { name: 'Solar Sales & Property Tax Exempt', amount: '100% exempt', category: 'solar', desc: 'Solar exempt from NJ sales tax AND property tax increases. Double exemption.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/nj/' },
+          { name: 'Net Metering (Full Retail)', amount: '1:1 retail credits', category: 'solar', desc: 'Full retail rate net metering. Excess credits carry forward annually.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/nj/' }
         ]
       },
       'VA': {
         name: 'Virginia',
         incentives: [
-          { name: 'Dominion Energy EV Rebate', amount: '$500-$1,000', category: 'ev', desc: 'Dominion Energy customers get rebates on Level 2 EV chargers and off-peak charging rates.', url: 'https://www.dominionenergy.com/virginia/save-energy/electric-vehicles' },
-          { name: 'VA Solar Property Tax Exemption', amount: '80% exemption', category: 'solar', desc: 'Solar installations exempt from 80% of property tax on added value (local jurisdictions may vary).', url: 'https://law.lis.virginia.gov/vacode/title58.1/chapter32/section58.1-3661/' },
-          { name: 'Net Metering', amount: 'Retail rate credits', category: 'solar', desc: 'Virginia requires net metering at retail rate for residential systems up to 25 kW.', url: 'https://www.scc.virginia.gov/pages/Net-Metering' }
+          { name: 'Net Metering (Full Retail)', amount: '1:1 retail credits', category: 'solar', desc: 'Dominion and Appalachian Power offer full retail rate net metering.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/va/' },
+          { name: 'Local Solar Property Tax Exemption', amount: 'Varies by locality', category: 'solar', desc: 'Counties/cities may exempt solar from property tax. Several NoVA counties offer credits.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/va/' },
+          { name: 'Dominion Energy EV Charger Rebate', amount: 'Up to $500', category: 'ev', desc: 'Rebate on Level 2 charger plus off-peak EV charging rates for Dominion customers.', url: 'https://www.dominionenergy.com/virginia/save-energy/electric-vehicles' }
         ]
       },
       'WA': {
         name: 'Washington',
         incentives: [
-          { name: 'WA EV Sales Tax Exemption', amount: '~8% savings', category: 'ev', desc: 'EVs under $45,000 MSRP exempt from state sales tax (6.5%+). Saves $3,000-$4,000+.', url: 'https://dor.wa.gov/taxes-rates/tax-incentives/incentives/clean-alternative-fuel-commercial-vehicles-sales-and-use-tax-exemption' },
-          { name: 'WA Solar Sales Tax Exemption', amount: '~8% savings', category: 'solar', desc: 'Solar panels and installation exempt from Washington state sales tax.', url: 'https://dor.wa.gov/taxes-rates/tax-incentives/incentives/renewable-energy-system-incentive-program' },
-          { name: 'Net Metering', amount: 'Retail rate credits', category: 'solar', desc: 'Washington requires net metering at retail rate for systems up to 100 kW.', url: 'https://www.utc.wa.gov/consumers/energy/net-metering' },
-          { name: 'PSE Rebates', amount: 'Varies', category: 'home', desc: 'Puget Sound Energy offers rebates on heat pumps, insulation, and smart thermostats.', url: 'https://www.pse.com/rebates' }
+          { name: 'WA EV Instant Rebate', amount: 'Up to $9,000 new / $2,500 used', category: 'ev', desc: 'Income-qualified (300% FPL). Program closed Oct 2024, may reopen with new funding.', url: 'https://ecology.wa.gov/air-climate/reducing-greenhouse-gas-emissions/zev/ev-rebate' },
+          { name: 'Solar Sales Tax Exemption', amount: '100% exempt', category: 'solar', desc: 'Solar equipment and installation exempt from WA state sales tax (~8%+ savings).', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/wa/' },
+          { name: 'PSE EV Charger Rebate', amount: '$300-$2,600', category: 'ev', desc: '$300 general, up to $2,600 income-qualified for Level 2 charger + installation.', url: 'https://www.pse.com/en/rebates/electric-car-charger-rebate' },
+          { name: 'Washington HEAR Program', amount: 'Up to $14,000', category: 'appliance', desc: '$73.5M invested 2024-2025, additional $30.1M for 2026. Heat pumps, appliances, efficiency. Active.', url: 'https://www.commerce.wa.gov/energy-incentives/hear/' }
         ]
       },
       'AZ': {
         name: 'Arizona',
         incentives: [
-          { name: 'AZ Solar Equipment Tax Credit', amount: 'Up to $1,000', category: 'solar', desc: 'Arizona personal income tax credit of 25% of solar equipment cost, up to $1,000.', url: 'https://azdor.gov/tax-credits/solar-energy-credit' },
-          { name: 'AZ Property Tax Exemption for Solar', amount: '100% exemption', category: 'solar', desc: 'Solar installations fully exempt from property tax increases in Arizona.', url: 'https://www.azleg.gov/ars/42/11054.htm' },
-          { name: 'APS Solar Rate Plans', amount: 'Bill credits', category: 'solar', desc: 'APS offers solar rate plans with export credit and demand-based rates for solar customers.', url: 'https://www.aps.com/en/Residential/Service-Plans/Compare-Service-Plans/Solar-Plans' },
-          { name: 'SRP EV Price Plan', amount: 'Discounted off-peak', category: 'ev', desc: 'Salt River Project offers EV-specific rate plan with very low off-peak rates for overnight charging.', url: 'https://www.srpnet.com/electric/home/ev-price-plan.aspx' }
+          { name: 'AZ Solar Tax Credit', amount: '25% up to $1,000', category: 'solar', desc: 'State income tax credit, 25% of solar cost capped at $1,000. Unused rolls over 5 years.', url: 'https://resilient.az.gov/clean-energy-hub/households/residential-solar-and-wind-energy-systems-tax-credit' },
+          { name: 'Solar Sales & Property Tax Exempt', amount: '100% exempt', category: 'solar', desc: 'Solar exempt from both AZ sales tax and property tax increases.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/az/' },
+          { name: 'Arizona HEAR Program', amount: 'Up to $8,000 heat pump', category: 'appliance', desc: '$76.4M available. Up to $8,000 heat pump, plus insulation, panels, air sealing.', url: 'https://resilient.az.gov/clean-energy-hub/households/home-energy-upgrade-incentives' },
+          { name: 'APS Home Energy Rebates', amount: 'Varies', category: 'home', desc: 'APS customers get rebates on HVAC, insulation, smart thermostats.', url: 'https://www.aps.com/residential/save-money-and-energy/rebates-incentives' }
         ]
       },
       'MA': {
         name: 'Massachusetts',
         incentives: [
-          { name: 'MOR-EV Rebate', amount: 'Up to $3,500', category: 'ev', desc: 'Massachusetts rebate for new EVs. $3,500 for battery EVs under $55,000 MSRP.', url: 'https://mor-ev.org/' },
-          { name: 'MA SMART Solar Incentive', amount: 'Up to $0.35/kWh', category: 'solar', desc: 'Performance-based incentive paying solar owners per kWh generated for 10 years. Very lucrative.', url: 'https://www.mass.gov/solar-massachusetts-renewable-target-smart' },
-          { name: 'Mass Save Rebates', amount: 'Up to $10,000+', category: 'home', desc: 'Comprehensive rebates on heat pumps ($10,000+), insulation (75-100% covered), and thermostats.', url: 'https://www.masssave.com/residential/rebates-and-incentives' },
-          { name: 'MA Solar Property Tax Exemption', amount: '20-year exemption', category: 'solar', desc: 'Solar installations exempt from property tax for 20 years in Massachusetts.', url: 'https://www.mass.gov/info-details/massachusetts-incentives-for-solar' }
+          { name: 'MOR-EV Rebate', amount: '$3,500 + $1,500 income adder', category: 'ev', desc: '$3,500 for new BEVs, $3,500 for used BEVs under $40K. Extra $1,500 for income-qualifying.', url: 'https://mor-ev.org/' },
+          { name: 'SMART 3.0 Solar Incentive', amount: 'Per-kWh for 20 years', category: 'solar', desc: 'Performance incentive per kWh for 20 years. 2026 program opened Jan 1 with 600 MW capacity. Very generous.', url: 'https://www.mass.gov/info-details/smart-30-program-details' },
+          { name: 'Mass Save Rebates', amount: 'Up to $10,000+ heat pumps', category: 'home', desc: '$10,000 whole-home heat pump, 75-100% insulation costs. Available to ALL MA utility customers.', url: 'https://www.masssave.com/' },
+          { name: 'Net Metering (Full Retail)', amount: '1:1 retail credits', category: 'solar', desc: 'Full retail rate net metering. Credits carry forward 12 months.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/ma/' },
+          { name: 'Solar Sales Tax Exemption', amount: '6.25% exempt', category: 'solar', desc: 'Solar equipment exempt from 6.25% state sales tax.', url: 'https://www.energysage.com/local-data/solar-rebates-incentives/ma/' }
         ]
       }
     };
@@ -294,10 +288,9 @@ class IncentivesFinder {
   }
 
   getTotalPotentialSavings(stateCode) {
-    // Estimate total potential savings for a state
     let total = 0;
-    // Federal: EV ($7,500) + Solar 30% of $20k ($6,000) + Home ($3,200)
-    total += 7500 + 6000 + 3200;
+    // Active federal: HEAR ($14,000) + HOMES ($8,000) + EV charger ($1,000)
+    total += 14000 + 8000 + 1000;
 
     const state = this.states[stateCode];
     if (state) {

@@ -504,9 +504,14 @@
   }
 
   function renderIncentiveCard(item) {
+    const statusLabels = { active: 'Active', limited: 'Limited Eligibility', expired: 'Expired (OBBBA)' };
+    const statusBadge = item.status
+      ? `<span class="incentive-status-badge incentive-status-${item.status}">${statusLabels[item.status] || item.status}</span>`
+      : '';
+    const expiredClass = item.status === 'expired' ? ' status-expired' : '';
     return `
-      <div class="incentive-card">
-        <div class="incentive-card-cat">${item.icon || '📋'} ${item.category}</div>
+      <div class="incentive-card${expiredClass}">
+        <div class="incentive-card-cat">${item.icon || '📋'} ${item.category} ${statusBadge}</div>
         <div class="incentive-card-top">
           <div class="incentive-card-name">${item.name}</div>
           <div class="incentive-card-amount">${item.amount}</div>

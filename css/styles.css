@@ -1273,6 +1273,60 @@ body {
   text-decoration: underline;
 }
 
+.incentive-status-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.incentive-status-active {
+  background: rgba(0, 230, 118, 0.15);
+  color: var(--primary);
+  border: 1px solid rgba(0, 230, 118, 0.3);
+}
+
+.incentive-status-limited {
+  background: rgba(255, 234, 0, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(255, 234, 0, 0.3);
+}
+
+.incentive-status-expired {
+  background: rgba(255, 82, 82, 0.12);
+  color: var(--danger);
+  border: 1px solid rgba(255, 82, 82, 0.3);
+}
+
+.incentive-card.status-expired {
+  opacity: 0.6;
+}
+
+.obbba-notice {
+  background: linear-gradient(135deg, rgba(255, 82, 82, 0.08), rgba(255, 234, 0, 0.06));
+  border: 1px solid rgba(255, 82, 82, 0.3);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin: 12px 0;
+}
+
+.obbba-notice-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--danger);
+  margin-bottom: 4px;
+}
+
+.obbba-notice-text {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
 /* ---- Bottom Navigation ---- */
 .bottom-nav {
   position: fixed;

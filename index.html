@@ -8,9 +8,9 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="description" content="AI-powered sustainable living coach. Calculate your carbon footprint, track green challenges, discover solar savings, and shop eco-friendly products.">
   <title>GreenSage — Sustainable Living Coach</title>
-  <link rel="manifest" href="manifest.json?v=3">
+  <link rel="manifest" href="manifest.json?v=4">
   <link rel="apple-touch-icon" href="assets/icon-192.png">
-  <link rel="stylesheet" href="css/styles.css?v=3">
+  <link rel="stylesheet" href="css/styles.css?v=4">
 </head>
 <body>
 
@@ -342,7 +342,7 @@
             <span class="smart-cta-icon">💰</span>
             <div>
               <div class="smart-cta-label">Check Your State Incentives</div>
-              <div class="smart-cta-desc">Federal 30% tax credit + state rebates could save thousands more</div>
+              <div class="smart-cta-desc">State rebates and active federal programs could save thousands more</div>
             </div>
             <span class="smart-cta-arrow">→</span>
           </div>
@@ -648,6 +648,12 @@
       <div class="incentive-total-sub">Federal + State combined</div>
     </div>
 
+    <!-- OBBBA Notice -->
+    <div class="obbba-notice">
+      <div class="obbba-notice-title">⚠️ Important: Federal Policy Change (July 2025)</div>
+      <div class="obbba-notice-text">The <strong>One Big Beautiful Bill Act (OBBBA)</strong> terminated several IRA clean energy credits early. The Solar ITC, Used EV credit, Heat Pump (25C), and Insulation (25C) credits expired Dec 31, 2025. Active programs are marked below. State incentives are unaffected.</div>
+    </div>
+
     <!-- Federal Incentives -->
     <div class="incentive-section-title" id="fedSectionTitle">🇺🇸 Federal Incentives</div>
     <div id="federalIncentivesList"></div>
@@ -830,13 +836,13 @@ if (sessionStorage.getItem('gs_entered')) {
   document.getElementById('appContainer').classList.add('active');
 }
 </script>
-<script src="js/carbon-calc.js?v=3"></script>
-<script src="js/solar-calc.js?v=3"></script>
-<script src="js/ev-calc.js?v=3"></script>
-<script src="js/incentives.js?v=3"></script>
-<script src="js/challenges.js?v=3"></script>
-<script src="js/green-shop.js?v=3"></script>
-<script src="js/learn.js?v=3"></script>
-<script src="js/app.js?v=3"></script>
+<script src="js/carbon-calc.js?v=4"></script>
+<script src="js/solar-calc.js?v=4"></script>
+<script src="js/ev-calc.js?v=4"></script>
+<script src="js/incentives.js?v=4"></script>
+<script src="js/challenges.js?v=4"></script>
+<script src="js/green-shop.js?v=4"></script>
+<script src="js/learn.js?v=4"></script>
+<script src="js/app.js?v=4"></script>
 </body>
 </html>
