@@ -121,18 +121,14 @@
 
   // ---- Initialize ----
   function init() {
-    setupNavigation();
-    setupCarbonCalc();
-    setupSolarCalc();
-    setupEVCalc();
-    setupIncentives();
-    setupChallenges();
-    setupShop();
-    setupLearn();
-    setupShareActions();
-    setupInstallPrompt();
-    setupShareResults();
-    setupEmailCapture();
+    const modules = [
+      setupNavigation, setupCarbonCalc, setupSolarCalc, setupEVCalc,
+      setupIncentives, setupChallenges, setupShop, setupLearn,
+      setupShareActions, setupInstallPrompt, setupShareResults, setupEmailCapture
+    ];
+    modules.forEach(fn => {
+      try { fn(); } catch (e) { console.warn('GreenSage init:', fn.name, e); }
+    });
   }
 
   // ============================================
@@ -141,8 +137,10 @@
   function setupNavigation() {
     const navBtns = els.bottomNav.querySelectorAll('.nav-btn');
     navBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
         const tabId = btn.dataset.tab;
+        if (!tabId) return; // skip Blog link (no data-tab)
+        e.preventDefault();
         switchTab(tabId);
         navBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
