@@ -161,9 +161,8 @@ class GreenChallenges {
     this.state.completedToday.push(challengeId);
     this.state.totalPoints += challenge.points;
 
-    // If all 3 completed, update streak
+    // If all 3 completed, record in history (streak managed by _newDay only)
     if (this.state.completedToday.length >= 3) {
-      this.state.streak = (this.state.streak || 0) + 1;
       this.state.history.push({
         date: this._today(),
         completed: this.state.completedToday.length,

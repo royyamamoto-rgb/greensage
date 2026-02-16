@@ -8,8 +8,8 @@ class SolarCalc {
     // System assumptions
     this.panelWatts = 400;          // Watts per panel (modern residential)
     this.panelSqFt = 17.5;         // Sq ft per panel
-    this.costPerWatt = 2.75;        // $ per watt (after ITC in 2024)
-    this.federalITC = 0.30;         // 30% federal tax credit
+    this.costPerWatt = 2.75;        // $ per watt (pre-incentive cost)
+    this.federalITC = 0.0;          // Federal ITC expired Dec 31, 2025 (OBBBA)
     this.degradation = 0.005;       // 0.5% annual panel degradation
     this.electricityInflation = 0.025; // 2.5% annual electricity price increase
     this.co2PerKwh = 0.000417;      // tons CO₂ per kWh (EPA eGRID US avg)

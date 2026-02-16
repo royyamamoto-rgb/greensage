@@ -74,7 +74,7 @@ class CarbonCalc {
 
     // Home energy: monthly bill → annual
     const annualBillHundreds = (elecBill * 12) / 100;
-    const energyTons = annualBillHundreds * (this.energyFactors[energy]?.perDollar || 0.05) * 12;
+    const energyTons = annualBillHundreds * (this.energyFactors[energy]?.perDollar || 0.05);
 
     // Diet
     const dietTons = this.dietFactors[diet] || 2.5;
