@@ -649,6 +649,14 @@
   // ============================================
   function setupLearn() {
     renderLearnList();
+    // Poll for dynamic blog index from API
+    let _blogCheck = setInterval(() => {
+      if (window._greenSageBlogIndex && window._greenSageBlogIndex.posts) {
+        renderLearnList(); // re-render with blog posts included
+        clearInterval(_blogCheck);
+      }
+    }, 600);
+    setTimeout(() => clearInterval(_blogCheck), 10000);
   }
 
   function renderLearnList() {
@@ -656,7 +664,8 @@
     els.learnList.style.display = 'block';
     els.learnContent.classList.remove('active');
 
-    els.learnList.innerHTML = articles.map(a => `
+    // Static articles
+    let html = articles.map(a => `
       <div class="learn-card" onclick="window._openArticle('${a.id}')">
         <div class="learn-card-top">
           <div class="learn-card-icon">${a.icon}</div>
@@ -671,6 +680,31 @@
         </div>
       </div>
     `).join('');
+
+    // Dynamic blog posts from API
+    const blogData = window._greenSageBlogIndex;
+    if (blogData && blogData.posts && blogData.posts.length > 0) {
+      html += `<div style="padding:12px 16px 4px;font-weight:700;font-size:0.85rem;color:var(--primary);">📝 Latest Blog Posts</div>`;
+      html += blogData.posts.map(p => {
+        const icon = p.category === 'Solar' ? '☀️' : p.category === 'Electric Vehicles' ? '🚗' : p.category === 'Climate' ? '🌍' : p.category === 'Home Energy' ? '🏠' : p.category === 'Green Living' ? '🌿' : '📄';
+        return `
+        <div class="learn-card" onclick="window._openBlogPost('${p.url}')">
+          <div class="learn-card-top">
+            <div class="learn-card-icon">${icon}</div>
+            <div>
+              <div class="learn-card-title">${p.title}</div>
+              <div class="learn-card-meta">
+                <span>${p.readTime || ''}</span>
+                <span>${p.category}</span>
+                <span>${p.date}</span>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    els.learnList.innerHTML = html;
   }
 
   window._openArticle = function(id) {
@@ -689,6 +723,10 @@
 
   window._backToLearnList = function() {
     renderLearnList();
+  };
+
+  window._openBlogPost = function(url) {
+    if (url) window.open(url, '_blank', 'noopener');
   };
 
   // ============================================
@@ -881,6 +919,43 @@
     const count = parseInt(localStorage.getItem('gs_calc_count') || '0') + 1;
     localStorage.setItem('gs_calc_count', String(count));
   }
+
+  // ============================================
+  // DYNAMIC NEWS FEED
+  // ============================================
+  function renderNewsFeed() {
+    const newsData = window._greenSageNews;
+    if (!newsData || !newsData.items || newsData.items.length === 0) return;
+
+    const section = $('newsSection');
+    const feed = $('newsFeed');
+    const updated = $('newsUpdated');
+    if (!section || !feed) return;
+
+    feed.innerHTML = newsData.items.map(item => `
+      <div style="padding:10px 0;border-bottom:1px solid var(--border);">
+        <div style="font-size:0.7rem;color:var(--text-muted);margin-bottom:2px;">${item.category} · ${item.date}</div>
+        <div style="font-weight:600;font-size:0.85rem;margin-bottom:4px;">
+          ${item.url ? '<a href="' + item.url + '" style="color:var(--primary);text-decoration:none;">' + item.title + '</a>' : item.title}
+        </div>
+        <div style="font-size:0.78rem;color:var(--text-dim);line-height:1.4;">${item.summary}</div>
+      </div>
+    `).join('');
+
+    if (updated && newsData.updated) {
+      updated.textContent = 'Last updated: ' + new Date(newsData.updated).toLocaleDateString();
+    }
+    section.style.display = 'block';
+  }
+
+  // Poll for dynamic data readiness (API fetch is async)
+  let _newsCheckInterval = setInterval(() => {
+    if (window._greenSageNews) {
+      renderNewsFeed();
+      clearInterval(_newsCheckInterval);
+    }
+  }, 500);
+  setTimeout(() => clearInterval(_newsCheckInterval), 10000); // stop checking after 10s
 
   // ============================================
   // INIT ON DOM READY
