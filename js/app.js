@@ -555,6 +555,11 @@
     }
   };
 
+  // Expose refresh for dynamic content updates
+  window._refreshIncentives = function() {
+    renderIncentives(getCurrentIncentiveCat());
+  };
+
   // ============================================
   // GREEN CHALLENGES
   // ============================================

@@ -354,3 +354,33 @@ class IncentivesFinder {
 }
 
 window.incentivesFinder = new IncentivesFinder();
+
+// Dynamic content layer — fetch from API if available, merge with static fallback
+(function() {
+  const API = 'https://greensage-api.roy-yamamoto.workers.dev/api';
+  const finder = window.incentivesFinder;
+
+  // Fetch updated federal incentives
+  fetch(API + '/incentives').then(r => r.json()).then(data => {
+    if (data && data.federal && data.federal.length > 0) {
+      finder.federal = data.federal;
+      finder._dynamicUpdated = data.updated;
+      // Re-render if incentives tab is visible
+      if (typeof window._refreshIncentives === 'function') window._refreshIncentives();
+    }
+  }).catch(() => {}); // silently fall back to static data
+
+  // Fetch news feed
+  fetch(API + '/news').then(r => r.json()).then(data => {
+    if (data && data.items) {
+      window._greenSageNews = data;
+    }
+  }).catch(() => {});
+
+  // Fetch blog index
+  fetch(API + '/blog-index').then(r => r.json()).then(data => {
+    if (data && data.posts) {
+      window._greenSageBlogIndex = data;
+    }
+  }).catch(() => {});
+})();
