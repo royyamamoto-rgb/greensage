@@ -629,16 +629,20 @@
   }
 
   function renderShop(category) {
-    const products = window.greenShop.getProducts(category);
+    const shop = window.greenShop;
+    const products = shop.getProducts(category);
     els.shopGrid.innerHTML = products.map(p => {
-      const url = window.greenShop.getAmazonUrl(p);
+      const url = shop.getAmazonUrl(p);
+      const imgUrl = shop.getImageUrl(p);
       return `
         <div class="shop-item">
-          <div class="shop-item-icon">${p.icon}</div>
+          <div class="shop-item-icon">
+            <img src="${imgUrl}" alt="${p.name}" loading="lazy">
+          </div>
           <div class="shop-item-name">${p.name}</div>
           <div class="shop-item-desc">${p.desc}</div>
           <div class="shop-item-impact">${p.impact}</div>
-          <a class="shop-item-btn" href="${url}" target="_blank" rel="noopener">View on Amazon</a>
+          <a class="shop-item-btn" href="${url}" target="_blank" rel="noopener sponsored">View on Amazon</a>
         </div>
       `;
     }).join('');
